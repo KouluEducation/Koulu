@@ -16,7 +16,10 @@
     "express": "^4.3.0",
     "kraken-devtools": "^1.0.0",
     "kraken-js": "^1.0.1",
-    "localizr": "^0.1.0"
+    "localizr": "^0.1.0",
+    "lodash": "^2.4.1",
+    "mysql": "^2.3.2",
+    "sequelize": "^1.7.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

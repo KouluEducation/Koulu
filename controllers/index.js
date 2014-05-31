@@ -1,18 +1,16 @@
 'use strict';
 
-
-var IndexModel = require('../models/index');
-
+var db = require('../models');
 
 module.exports = function (router) {
 
-    var model = new IndexModel();
-
-
     router.get('/', function (req, res) {
-        
-        res.render('index', model);
-        
+
+        db.User.find(1).success(function (user) {
+            if (!user) return res.send('No Users');
+            res.send(user.getNameUpperCase());
+        });
+
     });
 
 };

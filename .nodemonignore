@@ -3,3 +3,5 @@
 /.*			# any hidden (dot) files
 *.md	    # Markdown files
 *.css	    # CSS files
+*.ts        # TypeScript files
+*.js.map    $ JS Map files
