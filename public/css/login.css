@@ -3,6 +3,10 @@
   padding: 15px;
   margin: 0 auto;
 }
+.form-login h3 {
+  color: lightgray;
+  font-style: italic;
+}
 .form-login .form-control {
   position: relative;
   height: auto;
@@ -18,9 +22,7 @@
   border-bottom-left-radius: 0;
 }
 .form-login input[type="password"] {
+  margin-bottom: 10px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
-}
-.form-login .checkbox {
-  font-weight: normal;
 }

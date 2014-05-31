@@ -1,6 +1,6 @@
 <form class="form-login" role="form" action="/" method="post">
 	<h2>Bienvenido a Koulu!</h2>
-	<h3>Comienza aquí</h3>
+    {^message}<h3>Ingresa aquí</h3>{/message}
     {?message}
 	    <div class="alert alert-danger">
             {message}
@@ -10,17 +10,13 @@
            class="form-control"
            placeholder="Correo Electrónico"
            name="email"
-           required autofocus>
+           value="{email}"
+           required {^email}autofocus{/email}>
 	<input type="password"
            class="form-control"
            placeholder="Contraseña"
            name="password"
-           required>
-	<label class="checkbox">
-		<input type="checkbox"
-               value="remember-me"
-               name="remember-me"> Recuerdame
-	</label>
+           required {?email}autofocus{/email}>
 	<input type="hidden" name="_csrf" value="{_csrf}"/>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Comenzar!</button>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
 </form>
