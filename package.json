@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "adaro": "^0.1.5",
+    "bcrypt": "^0.7.8",
+    "connect-flash": "^0.1.1",
     "dustjs-helpers": "^1.2.0",
     "dustjs-linkedin": "^2.3.5",
     "engine-munger": "^0.1.3",

@@ -6,9 +6,42 @@ module.exports = function (router) {
 
     router.get('/', function (req, res) {
 
-        db.User.find(1).success(function (user) {
-            if (!user) return res.send('No Users');
-            res.send(user.getNameUpperCase());
+        if (!req.session.activeUser) {
+            res.render('index', {
+                message: req.flash('error')
+            });
+        } else {
+            res.json(req.session.activeUser);
+        }
+
+    });
+
+    router.post('/', function (req, res) {
+
+        db.User.find({ where: { email: req.body.email } })
+            .complete(function (err, user) {
+                if (err) return console.log(err);
+                if (!user || !user.passwordMatches(req.body.password)) {
+                    req.flash('error', 'Usuario y/o contraseña inválidos')
+                    req.session.activeUser = null;
+                } else {
+                    req.session.activeUser = user;
+                }
+                res.redirect('/');
+            });
+    });
+
+    // TODO: should be post
+    router.get('/signup', function (req, res) {
+
+        var user = db.User.build({
+            email: 'jc.ivancevich@gmail.com',
+            password: 'koulu',
+            first_name: 'Juan Carlos',
+            last_name: 'Ivancevich'
+        });
+        user.save().complete(function (err) {
+            if (err) return console.error(err);
         });
 
     });
