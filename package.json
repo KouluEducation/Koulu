@@ -2,7 +2,21 @@
   "name": "koulu",
   "version": "0.1.0",
   "description": "Open source class room management web app primarily designed for High School",
-  "author": "JC Ivancevich <jc.ivancevich@gmail.com>, Matías Kreder <mkreder@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KouluEducation/Koulu"
+  },
+  "author": "JC Ivancevich <jc.ivancevich@gmail.com>",
+  "contributors": [
+    {
+      "name": "Matías Kreder",
+      "email": "mkreder@gmail.com"
+    },
+    {
+      "name": "Maximiliano Einhorn",
+      "email": "mxeinhorn@gmail.com"
+    }
+  ],
   "main": "index.js",
   "scripts": {
     "test": "grunt test",
