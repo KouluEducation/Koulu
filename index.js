@@ -14,9 +14,9 @@ db
     .sequelize
     .sync()
     .complete(function (err) {
-        if (err) return console.error(err);
+        if (err) { return console.error(err); }
         app.listen(port, function (err) {
-            if (err) return console.error(err);
+            if (err) { return console.error(err); }
             console.log('[%s] Listening on http://localhost:%d', app.settings.env, port);
         });
     });

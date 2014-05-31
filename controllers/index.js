@@ -27,7 +27,7 @@ module.exports = function (router) {
 
         db.User.find({ where: { email: req.body.email } })
             .complete(function (err, user) {
-                if (err) return console.log(err);
+                if (err) { return console.log(err); }
                 if (!user || !user.passwordMatches(req.body.password)) {
                     req.flash('error', 'Usuario y/o contraseña inválidos');
                     req.flash('email', req.body.email);
@@ -60,7 +60,7 @@ module.exports = function (router) {
             last_name: 'Ivancevich'
         });
         user.save().complete(function (err) {
-            if (err) return console.error(err);
+            if (err) { return console.error(err); }
         });
 
     });
