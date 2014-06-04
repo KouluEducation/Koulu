@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../models');
+var User = require('../models').User;
 
 module.exports = function (router) {
 
@@ -25,9 +25,11 @@ module.exports = function (router) {
      */
     router.post('/', function (req, res) {
 
-        db.User.find({ where: { email: req.body.email } })
+        User.find({ where: { email: req.body.email } })
             .complete(function (err, user) {
-                if (err) { return console.log(err); }
+                if (err) {
+                    return console.log(err);
+                }
                 if (!user || !user.passwordMatches(req.body.password)) {
                     req.flash('error', 'Usuario y/o contraseña inválidos');
                     req.flash('email', req.body.email);
@@ -50,17 +52,19 @@ module.exports = function (router) {
     /**
      * Sign up
      */
-    // TODO: should be post
+        // TODO: should be post
     router.get('/signup', function (req, res) {
 
-        var user = db.User.build({
+        var user = User.build({
             email: 'jc.ivancevich@gmail.com',
             password: 'koulu',
             first_name: 'Juan Carlos',
             last_name: 'Ivancevich'
         });
         user.save().complete(function (err) {
-            if (err) { return console.error(err); }
+            if (err) {
+                return console.error(err);
+            }
         });
 
     });

@@ -5,10 +5,10 @@ var fs = require('fs'),
     Sequelize = require('sequelize'),
     sequelize = new Sequelize('koulu', 'root', 'root', {
         define: {
-            paranoid:    true,
+            paranoid: true,
             underscored: true,
-            charset:     'utf8',
-            collate:     'utf8_general_ci'
+            charset: 'utf8',
+            collate: 'utf8_general_ci'
         }
     }),
     _ = require('lodash'),
