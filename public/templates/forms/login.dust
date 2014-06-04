@@ -1,22 +1,31 @@
-<form class="form-login" role="form" action="/" method="post">
+<form class="pretty-form" role="form" action="/" method="post">
 	<h2>Bienvenido a Koulu!</h2>
-    {^message}<h3>Ingresa aquí</h3>{/message}
-    {?message}
-	    <div class="alert alert-danger">
-            {message}
-		</div>
-    {/message}
+    {^error}<h3>Ingresa aquí</h3>{/error}
+    {?error}
+	<div class="alert alert-danger">
+        {error}
+	</div>
+    {/error}
+    {?success}
+	<div class="alert alert-success">
+        {success}
+	</div>
+    {/success}
 	<input type="email"
-           class="form-control"
-           placeholder="Correo Electrónico"
-           name="email"
-           value="{email}"
-           required {^email}autofocus{/email}>
+	       class="form-control first"
+	       placeholder="Correo Electrónico"
+	       name="email"
+	       value="{email}"
+	       required {^email}autofocus{/email}>
 	<input type="password"
-           class="form-control"
-           placeholder="Contraseña"
-           name="password"
-           required {?email}autofocus{/email}>
+	       class="form-control last"
+	       placeholder="Contraseña"
+	       name="password"
+	       required {?email}autofocus{/email}>
 	<input type="hidden" name="_csrf" value="{_csrf}"/>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+	<hr/>
+    <div class="text-center wanna-sign-up">
+	    No tengo una cuenta pero quiero <a href="/signup">registrarme</a>
+    </div>
 </form>

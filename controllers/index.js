@@ -9,13 +9,14 @@ module.exports = function (router) {
      */
     router.get('/', function (req, res) {
 
-        if (!req.session.activeUser) {
+        if (!req.session.user) {
             res.render('index', {
-                message: req.flash('error'),
+                error: req.flash('error'),
+                success: req.flash('success'),
                 email: req.flash('email')
             });
         } else {
-            res.json(req.session.activeUser);
+            res.redirect('/home');
         }
 
     });
@@ -33,9 +34,9 @@ module.exports = function (router) {
                 if (!user || !user.passwordMatches(req.body.password)) {
                     req.flash('error', 'Usuario y/o contraseña inválidos');
                     req.flash('email', req.body.email);
-                    req.session.activeUser = null;
+                    req.session.user = null;
                 } else {
-                    req.session.activeUser = user;
+                    req.session.user = user;
                 }
                 res.redirect('/');
             });
@@ -45,26 +46,34 @@ module.exports = function (router) {
      * Logout
      */
     router.delete('/', function (req, res) {
-        req.session.activeUser = null;
+        req.session.user = null;
         res.redirect('/');
     });
 
     /**
-     * Sign up
+     * Sign up index
      */
-        // TODO: should be post
     router.get('/signup', function (req, res) {
 
+        res.render('signup');
+
+    });
+
+    router.post('/signup', function (req, res) {
+
         var user = User.build({
-            email: 'jc.ivancevich@gmail.com',
-            password: 'koulu',
-            first_name: 'Juan Carlos',
-            last_name: 'Ivancevich'
+            email: req.body.email,
+            password: req.body.password,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            kind: req.body.kind
         });
         user.save().complete(function (err) {
             if (err) {
                 return console.error(err);
             }
+            req.flash('success', 'Bienvenido a Koulu!');
+            res.redirect('/');
         });
 
     });

@@ -1,0 +1,40 @@
+<form class="pretty-form" role="form" action="/signup" method="post">
+	<h2>Registrate en Koulu!</h2>
+    {^message}<h3>Comienza aquí</h3>{/message}
+    {?message}
+    <div class="alert alert-danger">
+        {message}
+	</div>
+    {/message}
+	<input type="email"
+	       class="form-control first"
+	       placeholder="Correo Electrónico"
+	       name="email"
+	       value="{email}"
+	       required autofocus>
+	<input type="text"
+           class="form-control"
+           placeholder="Nombre"
+           name="first_name"
+           value="{first_name}"
+           required/>
+	<input type="text"
+	       class="form-control"
+	       placeholder="Apellido"
+	       name="last_name"
+	       value="{last_name}"
+	       required/>
+	<select name="kind" class="form-control">
+	    <option value="teacher">Soy Profesor</option>
+		<option value="preceptor">Soy Preceptor</option>
+	    <option value="parent">Soy Padre</option>
+            <option value="student">Soy Alumno</option>
+	</select>
+	<input type="password"
+	       class="form-control last"
+	       placeholder="Contraseña"
+	       name="password"
+	       required>
+	<input type="hidden" name="_csrf" value="{_csrf}"/>
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Comenzar!</button>
+</form>

@@ -1,0 +1,41 @@
+.pretty-form {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.pretty-form h3 {
+  color: lightgray;
+  font-style: italic;
+}
+.pretty-form .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.pretty-form select,
+.pretty-form input {
+  -webkit-appearance: none;
+  border-radius: 0;
+  margin-top: -1px;
+}
+.pretty-form input.first {
+  margin-top: 0px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.pretty-form input.last {
+  margin-bottom: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.pretty-form hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.pretty-form .wanna-sign-up {
+  margin-top: -7px;
+}
