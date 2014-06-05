@@ -8,7 +8,6 @@ var models = require('../models'),
 var flushFlash = function (request) {
     request.flash('error', null);
     request.flash('success', null);
-    request.flash('email', null);
     request.flash('values', null);
 };
 
@@ -23,7 +22,7 @@ module.exports = function (router) {
             res.render('index', {
                 error: req.flash('error'),
                 success: req.flash('success'),
-                email: req.flash('email')
+                values: req.flash('values')[0]
             });
         } else {
             res.redirect('/home');
@@ -44,7 +43,7 @@ module.exports = function (router) {
                 }
                 if (!user || !user.passwordMatches(req.body.password)) {
                     req.flash('error', 'Usuario y/o contraseña inválidos');
-                    req.flash('email', req.body.email);
+                    req.flash('values', req.body);
                     req.session.user = null;
                 } else {
                     flushFlash(req);

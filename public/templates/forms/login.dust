@@ -15,13 +15,13 @@
 	       class="form-control first"
 	       placeholder="Correo Electrónico"
 	       name="email"
-	       value="{email}"
-	       required {^email}autofocus{/email}>
+	       value="{values.email}"
+	       required {^values.email}autofocus{/values.email}>
 	<input type="password"
 	       class="form-control last"
 	       placeholder="Contraseña"
 	       name="password"
-	       required {?email}autofocus{/email}>
+	       required {?values.email}autofocus{/values.email}>
 	<input type="hidden" name="_csrf" value="{_csrf}"/>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
 	<hr/>

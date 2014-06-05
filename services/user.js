@@ -6,6 +6,29 @@ var models = require('../models'),
 
 module.exports = {
     /**
+     * Redirects if there is no user logged in
+     * @returns {Function}
+     */
+    isAuthenticated: function () {
+        return function (req, res, next) {
+            if (req.session.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        };
+    },
+    /**
+     * A helper method to add the user to the response context so we don't have to manually do it.
+     * @returns {injectUser}
+     */
+    injectUser: function () {
+        return function injectUser (req, res, next) {
+            res.locals.user = req.session.user;
+            next();
+        };
+    },
+    /**
      * Creates user's specific kind
      * @param user
      * @param callback
