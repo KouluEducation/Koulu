@@ -6,7 +6,9 @@ module.exports = function (router) {
      * Index
      */
     router.get('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        res.render('home');
+        UserSrv.getUser(req, function (user) {
+            res.render('home', user);
+        });
     });
 
 };

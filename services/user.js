@@ -1,4 +1,5 @@
 var models = require('../models'),
+    User = models.User,
     Teacher = models.Teacher,
     Parent = models.Parent,
     Preceptor = models.Preceptor,
@@ -27,6 +28,18 @@ module.exports = {
             res.locals.user = req.session.user;
             next();
         };
+    },
+    /**
+     * Return logged in user
+     * @param request
+     * @returns {packet.user|*|connection.user|values.user|user|connectionConfig.user}
+     * @param callback
+     */
+    getUser: function (request, callback) {
+        User.find({ where: { id: request.session.user.id } }).complete(function (err, user) {
+            if (err) return console.error(err);
+            return callback(user);
+        });
     },
     /**
      * Creates user's specific kind

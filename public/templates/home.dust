@@ -6,4 +6,10 @@
 
     {>"partials/header" /}
 
+    <label>Nombre: {user.first_name}</label>
+    <br/>
+    <label>Apellido: {user.last_name}</label>
+    <br/>
+    <label>Email: {user.email}</label>
+
 {/body}
