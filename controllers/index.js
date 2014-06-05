@@ -2,6 +2,13 @@
 
 var User = require('../models').User;
 
+var flushFlash = function (request) {
+    request.flash('error', null);
+    request.flash('success', null);
+    request.flash('email', null);
+    request.flash('values', null);
+};
+
 module.exports = function (router) {
 
     /**
@@ -29,13 +36,15 @@ module.exports = function (router) {
         User.find({ where: { email: req.body.email } })
             .complete(function (err, user) {
                 if (err) {
-                    return console.log(err);
+                    req.flash('error', 'Error al ingresar');
+                    return res.redirect('back');
                 }
                 if (!user || !user.passwordMatches(req.body.password)) {
                     req.flash('error', 'Usuario y/o contraseña inválidos');
                     req.flash('email', req.body.email);
                     req.session.user = null;
                 } else {
+                    flushFlash(req);
                     req.session.user = user;
                 }
                 res.redirect('/');
@@ -46,8 +55,11 @@ module.exports = function (router) {
      * Logout
      */
     router.delete('/', function (req, res) {
+
+        flushFlash(req);
         req.session.user = null;
         res.redirect('/');
+
     });
 
     /**
@@ -55,7 +67,10 @@ module.exports = function (router) {
      */
     router.get('/signup', function (req, res) {
 
-        res.render('signup');
+        res.render('signup', {
+            error: req.flash('error'),
+            values: req.flash('values')[0]
+        });
 
     });
 
@@ -70,7 +85,9 @@ module.exports = function (router) {
         });
         user.save().complete(function (err) {
             if (err) {
-                return console.error(err);
+                req.flash('error', 'Error al crear usuario');
+                req.flash('values', req.body);
+                return res.redirect('back');
             }
             req.flash('success', 'Bienvenido a Koulu!');
             res.redirect('/');
