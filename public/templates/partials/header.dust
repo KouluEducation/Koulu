@@ -1,0 +1,20 @@
+<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="../" class="navbar-brand">Koulu</a>
+		</div>
+		<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+			<ul class="nav navbar-nav">
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+                    <form action="/" method="post">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <input type="hidden" name="_csrf" value="{_csrf}"/>
+                        <button type="submit" class="form-control">Salir</button>
+                    </form>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>

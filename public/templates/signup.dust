@@ -1,5 +1,7 @@
 {>"layouts/master" /}
 
+{<title}Bienvenido a Koulu - Registrate{/title}
+
 {<body}
     {>"forms/signup" /}
 {/body}

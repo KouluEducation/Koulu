@@ -1,6 +1,9 @@
 'use strict';
 
-var User = require('../models').User;
+var models = require('../models'),
+    UserSrv = require('../services/user'),
+    User = models.User,
+    Teacher = models.Teacher;
 
 var flushFlash = function (request) {
     request.flash('error', null);
@@ -89,8 +92,10 @@ module.exports = function (router) {
                 req.flash('values', req.body);
                 return res.redirect('back');
             }
-            req.flash('success', 'Bienvenido a Koulu!');
-            res.redirect('/');
+            UserSrv.createUserKind(user, function (user) {
+                req.flash('success', 'Bienvenido a Koulu!');
+                res.redirect('/');
+            });
         });
 
     });
