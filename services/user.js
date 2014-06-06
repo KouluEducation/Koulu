@@ -36,7 +36,7 @@ module.exports = {
      * @param callback
      */
     getUser: function (request, callback) {
-        User.find({ where: { id: request.session.user.id } }).complete(function (err, user) {
+        User.find(request.session.user.id).complete(function (err, user) {
             if (err) return console.error(err);
             return callback(user);
         });
