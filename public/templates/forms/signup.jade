@@ -1,0 +1,38 @@
+form.pretty-form(role="form",action="/signup",method="post")
+  h2 Registrate en Koulu!
+  if error.length === 0
+    h3 Comienza aquí
+  else
+    .alert.alert-danger
+      = error
+  input.form-control.first(type="email",
+  placeholder="Correo Electrónico",
+  name="email",
+  value="#{values ? values.email : ''}",
+  required,
+  autofocus)
+  input.form-control(type="text",
+  placeholder="Nombre",
+  name="first_name",
+  value="#{values ? values.first_name : ''}",
+  required)
+  input.form-control(type="text",
+  placeholder="Apellido",
+  name="last_name",
+  value="#{values ? values.last_name : ''}",
+  required)
+  select.form-control(name="kind")
+    option(value="teacher",   selected=values ? values.kind == 'teacher' : false) Soy Profesor
+    option(value="preceptor", selected=values ? values.kind == 'preceptor' : false) Soy Preceptor
+    option(value="parent",    selected=values ? values.kind == 'parent' : false) Soy Padre
+    option(value="student",   selected=values ? values.kind == 'student' : false) Soy Alumno
+  input.form-control.last(type="password",
+  placeholder="Contraseña",
+  name="password",
+  required)
+  input(type="hidden",name="_csrf",value="#{_csrf}")
+  button.btn.btn-lg.btn-primary.btn-block(type="submit") Comenzar!
+  hr
+  .text-center.wanna-sign-up
+    | Ya tengo una cuenta y quiero&nbsp;
+    a(href="/") ingresar

@@ -1,0 +1,28 @@
+form.pretty-form(role="form",action="/",method="post")
+  h2 Bienvenido a Koulu!
+  if error.length === 0
+    h3 Ingresa aquí
+  else
+    .alert.alert-danger
+      = error
+  if success.length !== 0
+    .alert.alert-success
+      = success
+  input.form-control.first(
+  type="email",
+  placeholder="Correo Electrónico",
+  name="email",
+  value="#{values ? values.email : ''}",
+  required,
+  autofocus)
+  input.form-control.last(type="password",
+  placeholder="Contraseña",
+  name="password",
+  required,
+  autofocus)
+  input(type="hidden",name="_csrf",value="#{_csrf}")
+  button.btn.btn-lg.btn-primary.btn-block(type="submit") Ingresar
+  hr
+  .text-center.wanna-sign-up
+    | No tengo una cuenta pero quiero&nbsp;
+    a(href="/signup") registrarme

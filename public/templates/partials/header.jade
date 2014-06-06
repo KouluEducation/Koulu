@@ -1,0 +1,12 @@
+header#top.navbar.navbar-static-top(role="banner")
+	.container
+		.navbar-header
+			a.navbar-brand(href="../") Koulu
+		nav.collapse.navbar-collapse(role="navigation")
+			ul.nav.navbar-nav
+			ul.nav.navbar-nav.navbar-right
+				li
+				form(action="/",method="post")
+				  input(type="hidden",name="_method",value="delete")
+          input(type="hidden",name="_csrf",value="{_csrf}")
+          button.form-control(type="submit") Salir

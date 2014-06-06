@@ -1,7 +1,0 @@
-{>"layouts/master" /}
-
-{<title}Bienvenido a Koulu - Educación Organizada{/title}
-
-{<body}
-    {>"forms/login" /}
-{/body}

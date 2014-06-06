@@ -2,17 +2,22 @@
 
     "express": {
         "view cache": false,
-        "view engine": "js",
+        "view engine": "jade",
         "views": "path:./.build/templates"
     },
 
     "view engines": {
+        "jade": {
+            "module": "consolidate"
+        },
         "js": {
             "module": "engine-munger",
             "renderer": {
                 "method": "js",
                 "arguments": [
-                    { "cache": true },
+                    {
+                        "cache": true
+                    },
                     {
                         "views": "config:express.views",
                         "view engine": "config:express.view engine",
@@ -23,14 +28,13 @@
             }
         }
     },
-    
+
 
     "i18n": {
         "contentPath": "path:./locales",
         "fallback": "en-US"
     },
-    
-    
+
 
     "middleware": {
 
@@ -42,7 +46,11 @@
 
         "router": {
             "module": {
-                "arguments": [{ "directory": "path:./controllers" }]
+                "arguments": [
+                    {
+                        "directory": "path:./controllers"
+                    }
+                ]
             }
         },
 
