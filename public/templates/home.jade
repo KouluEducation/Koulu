@@ -5,10 +5,9 @@ block title
 
 block body
   include partials/header
-
-  include components/user
-
-  include components/todos
+  .container.content
+    include components/user
+    include components/todos
 
 block scripts
   script(src="/js/todos.js")
