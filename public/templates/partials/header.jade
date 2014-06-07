@@ -31,10 +31,8 @@
 			form.navbar-form.navbar-left
 				input.form-control.col-lg-8(type="text",placeholder="Search")
 			ul.nav.navbar-nav.navbar-right
-				li
-					a(href="#") Link
 				li.dropdown
-					a.dropdown-toggle(href="#",data-toggle="dropdown") Dropdown
+					a.dropdown-toggle(href="#",data-toggle="dropdown") #{user ? user.email : ''}
 						b.caret
 					ul.dropdown-menu
 						li
@@ -45,4 +43,4 @@
 							a(href="#") Something else here
 						li.divider
 						li
-							a(href="#") Separated link
+							a(href="#") Salir de Koulu
