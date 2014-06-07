@@ -58,8 +58,8 @@ module.exports = function (router) {
      */
     router.delete('/', function (req, res) {
 
-        flushFlash(req);
         req.session.user = null;
+        flushFlash(req);
         res.redirect('/');
 
     });

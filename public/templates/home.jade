@@ -4,12 +4,13 @@ block title
   | Koulu
 
 block body
-  include partials/header
+  include components/header
   .container.content
     include components/user
     include components/todos
 
 block scripts
+  script(src="/js/header.js")
   script(src="/js/todos.js")
 
 block styles

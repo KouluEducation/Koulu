@@ -1,4 +1,7 @@
-.navbar.navbar-inverse.navbar-fixed-top
+//- Assets:
+//- 1) /js/header.js
+
+#kl-header.navbar.navbar-inverse.navbar-fixed-top
 	.container
 		.navbar-header
 			button.navbar-toggle(type="button",data-toggle="collapse",data-target=".navbar-inverse-collapse")
@@ -43,4 +46,4 @@
 							a(href="#") Something else here
 						li.divider
 						li
-							a(href="#") Salir de Koulu
+							a#log-out(href="/#/log-out",data-csrf="#{_csrf}") Salir de Koulu
