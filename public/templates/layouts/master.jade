@@ -8,9 +8,10 @@ html(lang="es")
       block title
     link(rel="stylesheet",href="/components/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet",href="/css/forms.css")
-    script(src="/components/vue/dist/vue.min.js")
-    script(src="/components/superagent/superagent.js")
+    block styles
   body
     .container-fluid
       block body
+    script(src="/components/vue/dist/vue.min.js")
+    script(src="/components/superagent/superagent.js")
     block scripts
