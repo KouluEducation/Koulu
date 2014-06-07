@@ -1,5 +1,5 @@
-var demo = new Vue({
-    el: '#demo',
+var klTodos = new Vue({
+    el: '#kl-todos',
     data: {
         title: 'todos',
         todos: window.klTodos
@@ -10,7 +10,7 @@ var demo = new Vue({
             window.superagent
                 .get('/home/todos.json')
                 .end(function (res) {
-                    demo.$data.todos = res.body;
+                    klTodos.$data.todos = res.body;
                 });
         }
     }

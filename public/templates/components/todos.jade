@@ -1,7 +1,8 @@
+// To use this component include /js/todos.js
 script(type="text/javascript").
   window.klTodos = !{JSON.stringify(todos)};
 
-#demo
+#kl-todos
   h1 {{title | uppercase}}
   button.btn.btn-danger.pull-right(v-on="click: refresh($event)") Refrescar
   ul
