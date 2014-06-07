@@ -2,8 +2,7 @@
 
 var models = require('../models'),
     UserSrv = require('../services/user'),
-    User = models.User,
-    Teacher = models.Teacher;
+    User = models.User;
 
 var flushFlash = function (request) {
     request.flash('error', null);
@@ -59,7 +58,6 @@ module.exports = function (router) {
     router.delete('/', function (req, res) {
 
         req.session.user = null;
-        flushFlash(req);
         res.redirect('/');
 
     });
@@ -78,14 +76,13 @@ module.exports = function (router) {
 
     router.post('/signup', function (req, res) {
 
-        var user = User.build({
+        User.build({
             email: req.body.email,
             password: req.body.password,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             kind: req.body.kind
-        });
-        user.save().complete(function (err) {
+        }).save().complete(function (err, user) {
             if (err) {
                 req.flash('error', 'Error al crear usuario');
                 req.flash('values', req.body);
