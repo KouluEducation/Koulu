@@ -12,6 +12,8 @@
   "dependencies": {
     "dustjs-linkedin": "^2.0.3",
     "dustjs-linkedin-helpers": "^1.1.1",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "vue": "~0.10.5",
+    "superagent": "~0.18.0"
   }
 }

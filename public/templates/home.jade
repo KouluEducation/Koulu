@@ -4,11 +4,11 @@ block title
   | Koulu
 
 block body
+  include partials/header
 
-    include partials/header
+  include components/user
 
-    label.form-control Nombre: {user.first_name}
-    br
-    label.form-control Apellido: {user.last_name}
-    br
-    label.form-control Email: {user.email}
+  include components/todos
+
+block scripts
+  script(src="/js/todos.js")
