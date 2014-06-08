@@ -7,6 +7,20 @@ script(type="text/javascript").
 
 #kl-classrooms
   h1 Cursos
+  button.btn.btn-success.pull-right(data-toggle="modal",data-target="#kl-classroom-modal") Agregar Curso
   button.btn.btn-danger.pull-right(v-on="click: refresh($event)") Refrescar
   ul
     li(v-repeat="classrooms") {{name}}
+
+//- Classroom modal window
+#kl-classroom-modal.modal.fade(tabindex="-1",role="dialog",aria-labelledby="kl-classroom-modal-label",aria-hidden="true")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type="button",data-dismiss="modal",aria-hidden="true") &times;
+        h4#kl-classroom-modal-label.modal-title Agregar curso
+      .modal-body
+        | ...
+      .modal-footer
+        button.btn.btn-default(type="button",data-dismiss="modal") Cancelar
+        button.btn.btn-primary(type="button",v-on="click: add($event)") Guardar

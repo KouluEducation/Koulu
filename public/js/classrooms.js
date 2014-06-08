@@ -14,3 +14,15 @@ var klClassrooms = new Vue({
         }
     }
 });
+
+var klClassroomModal = new Vue({
+    el: '#kl-classroom-modal',
+    methods: {
+        add: function (e) {
+            // TODO
+            klClassrooms.$data.classrooms.push({
+                name: '6to "D" Economía'
+            });
+        }
+    }
+});
