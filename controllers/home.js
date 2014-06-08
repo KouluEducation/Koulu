@@ -1,3 +1,5 @@
+'use strict';
+
 var UserSrv = require('../services/user');
 
 module.exports = function (router) {
@@ -6,7 +8,7 @@ module.exports = function (router) {
      * Index
      */
     router.get('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req, function (user) {
+        UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
                     teacher.getClassrooms().complete(function (err, classrooms) {
@@ -25,7 +27,7 @@ module.exports = function (router) {
     });
 
     router.get('/classrooms.json', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req, function (user) {
+        UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
                     teacher.getClassrooms().complete(function (err, classrooms) {

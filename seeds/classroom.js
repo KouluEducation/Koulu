@@ -3,15 +3,15 @@ var q = require('q'),
 
 module.exports = {
 
-    seed: function (user) {
+    seed: function (specialty, user) {
         var deferred = q.defer();
 
         var data = {
-            name: '4to "C" Informática',
+            name: '4to "C"',
             category: 'secondary'
         };
 
-        ClassroomSrv.createClassroom(data, user, function (classroom) {
+        ClassroomSrv.createClassroom(data, specialty, user).then(function (classroom) {
             console.error('Classroom seed success');
             deferred.resolve(classroom);
         }, function (err) {

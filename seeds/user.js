@@ -11,10 +11,11 @@ module.exports = {
             password: 'koulu',
             first_name: 'Profesor',
             last_name: 'Koulu',
-            kind: 'teacher'
+            kind: 'preceptor'
+            // kind: 'teacher'
         };
 
-        UserSrv.createUser(data, function (user) {
+        UserSrv.createUser(data).then(function (user) {
             console.log('User seed success');
             deferred.resolve(user);
         }, function (err) {

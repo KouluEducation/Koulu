@@ -83,7 +83,7 @@ module.exports = function (router) {
             kind: req.body.kind
         };
 
-        UserSrv.createUser(data, function (user) {
+        UserSrv.createUser(data).then(function (user) {
             req.flash('success', 'Bienvenido a Koulu!');
             res.redirect('/');
         }, function (err) {

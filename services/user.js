@@ -1,4 +1,7 @@
-var models = require('../models'),
+'use strict';
+
+var q = require('q'),
+    models = require('../models'),
     User = models.User,
     Teacher = models.Teacher,
     Parent = models.Parent,
@@ -32,22 +35,27 @@ module.exports = {
     /**
      * Return logged in user
      * @param request
-     * @returns {packet.user|*|connection.user|values.user|user|connectionConfig.user}
-     * @param callback
+     * @returns promise
      */
-    getUser: function (request, callback) {
+    getUser: function (request) {
+        var deferred = q.defer();
+
         User.find(request.session.user.id).complete(function (err, user) {
-            if (err) return console.error(err);
-            return callback(user);
+            if (err) {
+                return deferred.reject(err);
+            }
+            deferred.resolve(user);
         });
+
+        return deferred.promise;
     },
     /**
      * Creates a user and it's specific kind
      * @param data
-     * @param success Function
-     * @param error Function
      */
-    createUser: function (data, success, error) {
+    createUser: function (data) {
+        var deferred = q.defer();
+
         User.build({
             email: data.email,
             password: data.password,
@@ -56,12 +64,14 @@ module.exports = {
             kind: data.kind
         }).save().complete(function (err, user) {
             if (err) {
-                error(err);
+                deferred.reject(err);
             }
-            createUserKind(user, function (user) {
-                success(user);
+            createUserKind(user).then(function (user) {
+                deferred.resolve(user);
             });
         });
+
+        return deferred.promise;
     }
 };
 
@@ -70,36 +80,47 @@ module.exports = {
 /**
  * Creates user's specific kind
  * @param user
- * @param callback
  */
-var createUserKind = function (user, callback) {
+var createUserKind = function (user) {
+    var deferred = q.defer();
+
     if (user.isTeacher()) {
         Teacher.create({}).complete(function (err, teacher) {
             user.setTeacher(teacher).complete(function (err) {
-                if (err) return console.error(err);
-                return callback(user);
+                if (err) {
+                    return deferred.reject(err);
+                }
+                deferred.resolve(user);
             });
         });
     } else if (user.isPreceptor()) {
         Preceptor.create({}).complete(function (err, preceptor) {
             user.setPreceptor(preceptor).complete(function (err) {
-                if (err) return console.error(err);
-                return callback(user);
+                if (err) {
+                    return deferred.reject(err);
+                }
+                deferred.resolve(user);
             });
         });
     } else if (user.isParent()) {
         Parent.create({}).complete(function (err, parent) {
             user.setParent(parent).complete(function (err) {
-                if (err) return console.error(err);
-                return callback(user);
+                if (err) {
+                    return deferred.reject(err);
+                }
+                deferred.resolve(user);
             });
         });
     } else if (user.isStudent()) {
         Student.create({}).complete(function (err, student) {
             user.setStudent(student).complete(function (err) {
-                if (err) return console.error(err);
-                return callback(user);
+                if (err) {
+                    return deferred.reject(err);
+                }
+                deferred.resolve(user);
             });
         });
     }
+
+    return deferred.promise;
 };
