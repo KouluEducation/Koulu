@@ -5,6 +5,7 @@ var kraken = require('kraken-js'),
     options = require('./lib/spec')(app),
     flash = require('connect-flash'),
     db = require('./models'),
+    seeds = require('./seeds'),
     port = process.env.PORT || 8000;
 
 app.use(kraken(options));
@@ -12,15 +13,17 @@ app.use(flash());
 
 db
     .sequelize
-    .sync()
+    .sync({ force: true })
     .complete(function (err) {
         if (err) {
             return console.error(err);
         }
-        app.listen(port, function (err) {
-            if (err) {
-                return console.error(err);
-            }
-            console.log('[%s] Listening on http://localhost:%d', app.settings.env, port);
+        seeds.executeSeeds().then(function () {
+            app.listen(port, function (err) {
+                if (err) {
+                    return console.error(err);
+                }
+                console.log('[%s] Listening on http://localhost:%d', app.settings.env, port);
+            });
         });
     });

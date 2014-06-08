@@ -3,9 +3,7 @@
 module.exports = function (sequelize, DataTypes) {
     var Teacher = sequelize.define('Teacher', {}, {
         classMethods: {
-            associate: function(models) {
-                Teacher.belongsTo(models.User)
-            }
+            associate: function (models) {}
         }
     });
 

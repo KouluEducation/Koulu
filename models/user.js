@@ -22,11 +22,12 @@ module.exports = function (sequelize, DataTypes) {
         kind: DataTypes.ENUM('teacher', 'preceptor', 'parent', 'student')
     }, {
         classMethods: {
-            associate: function(models) {
-                User.hasOne(models.Teacher);
-                User.hasOne(models.Parent);
-                User.hasOne(models.Student);
-                User.hasOne(models.Preceptor);
+            associate: function (models) {
+                User
+                    .hasOne(models.Teacher.belongsTo(User))
+                    .hasOne(models.Parent.belongsTo(User))
+                    .hasOne(models.Student.belongsTo(User))
+                    .hasOne(models.Preceptor.belongsTo(User));
             }
         },
         instanceMethods: {

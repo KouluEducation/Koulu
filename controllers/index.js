@@ -1,8 +1,7 @@
 'use strict';
 
-var models = require('../models'),
-    UserSrv = require('../services/user'),
-    User = models.User;
+var User = require('../models').User,
+    UserSrv = require('../services/user');
 
 var flushFlash = function (request) {
     request.flash('error', null);
@@ -76,22 +75,21 @@ module.exports = function (router) {
 
     router.post('/signup', function (req, res) {
 
-        User.build({
+        var data = {
             email: req.body.email,
             password: req.body.password,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             kind: req.body.kind
-        }).save().complete(function (err, user) {
-            if (err) {
-                req.flash('error', 'Error al crear usuario');
-                req.flash('values', req.body);
-                return res.redirect('back');
-            }
-            UserSrv.createUserKind(user, function (user) {
-                req.flash('success', 'Bienvenido a Koulu!');
-                res.redirect('/');
-            });
+        };
+
+        UserSrv.createUser(data, function (user) {
+            req.flash('success', 'Bienvenido a Koulu!');
+            res.redirect('/');
+        }, function (err) {
+            req.flash('error', 'Error al crear usuario');
+            req.flash('values', req.body);
+            return res.redirect('back');
         });
 
     });

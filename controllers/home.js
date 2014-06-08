@@ -7,35 +7,35 @@ module.exports = function (router) {
      */
     router.get('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req, function (user) {
-            var todos = [
-                    {
-                        done: true,
-                        content: 'Learn JavaScript'
-                    },
-                    {
-                        done: false,
-                        content: 'Learn vue.js'
-                    }
-                ];
-            res.render('home', {
-                user: user,
-                todos: todos
-            });
+            if (user.isTeacher()) {
+                user.getTeacher().complete(function (err, teacher) {
+                    teacher.getClassrooms().complete(function (err, classrooms) {
+                        res.render('home', {
+                            user: user,
+                            classrooms: classrooms
+                        });
+                    });
+                });
+            } else {
+                res.render('home', {
+                    user: user
+                });
+            }
         });
     });
 
-    router.get('/todos.json', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        var todos = [
-            {
-                done: false,
-                content: 'Learn Kraken.js'
-            },
-            {
-                done: true,
-                content: 'Learn Grunt'
+    router.get('/classrooms.json', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req, function (user) {
+            if (user.isTeacher()) {
+                user.getTeacher().complete(function (err, teacher) {
+                    teacher.getClassrooms().complete(function (err, classrooms) {
+                        res.json(classrooms);
+                    });
+                });
+            } else {
+                res.json([]);
             }
-        ];
-        res.json(todos);
+        });
     });
 
 };

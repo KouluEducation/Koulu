@@ -1,0 +1,12 @@
+//- Assets:
+//- 1) /js/classrooms.js
+//- 2) /css/classrooms.css
+
+script(type="text/javascript").
+  window.klClassrooms = !{JSON.stringify(classrooms)};
+
+#kl-classrooms
+  h1 Cursos
+  button.btn.btn-danger.pull-right(v-on="click: refresh($event)") Refrescar
+  ul
+    li(v-repeat="classrooms") {{name}}

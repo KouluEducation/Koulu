@@ -3,8 +3,8 @@
 module.exports = function (sequelize, DataTypes) {
     var Preceptor = sequelize.define('Preceptor', {}, {
         classMethods: {
-            associate: function(models) {
-                Preceptor.belongsTo(models.User)
+            associate: function (models) {
+                Preceptor.hasMany(models.Classroom);
             }
         }
     });
