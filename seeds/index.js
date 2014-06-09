@@ -12,7 +12,8 @@ module.exports = {
 
         var seededUsers = {},
             seededSpeciality = {},
-            seededClassroom = {};
+            seededClassroom = {},
+            seededSubject = {};
 
         return UserSeed.seed()
         .then(function (users) {
@@ -37,7 +38,11 @@ module.exports = {
             return SubjectSeed.seed(classroom);
         })
         .then(function (subject) {
+            seededSubject = subject;
             return subject.associateClassroom(seededClassroom);
+        })
+        .then(function (classroom) {
+            return seededUsers.teacher.associateSubject(seededSubject);
         });
 
     }

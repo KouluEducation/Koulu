@@ -11,16 +11,17 @@ module.exports = function (router) {
         UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
-                    teacher.getSubjects().complete(function (err, subjects) {
+                    teacher.getClassroomsSubjects().then(function (classroomsSubjects) {
                         res.render('home', {
                             user: user,
-                            classrooms: subjects
+                            classrooms: classroomsSubjects
                         });
                     });
                 });
             } else {
                 res.render('home', {
-                    user: user
+                    user: user,
+                    classrooms: []
                 });
             }
         });
@@ -30,8 +31,8 @@ module.exports = function (router) {
         UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
-                    teacher.getSubjects().complete(function (err, subjects) {
-                        res.json(subjects);
+                    teacher.getClassroomsSubjects().then(function (classroomsSubjects) {
+                        res.json(classroomsSubjects);
                     });
                 });
             } else {

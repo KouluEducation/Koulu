@@ -76,7 +76,7 @@ module.exports = function (sequelize, DataTypes) {
                 return this.kind === 'student';
             },
             /**
-             * Associates user with a classroom if acceptable
+             * Associates a user to a classroom if acceptable
              * @param classroom
              */
             associateClassroom: function (classroom) {
@@ -104,6 +104,27 @@ module.exports = function (sequelize, DataTypes) {
                         });
                 } else {
                     deferred.resolve(classroom);
+                }
+
+                return deferred.promise;
+            },
+            /**
+             * Associates a user to a subject if acceptable
+             * @param subject
+             */
+            associateSubject: function (subject) {
+                var deferred = q.defer();
+
+                if (this.isTeacher()) {
+                    this.getTeacher()
+                        .complete(function (err, teacher) {
+                            if (err) {
+                                return deferred.reject(err);
+                            }
+                            teacher.associateSubject(subject).then(function (subject) {
+                                deferred.resolve(subject);
+                            });
+                        });
                 }
 
                 return deferred.promise;
