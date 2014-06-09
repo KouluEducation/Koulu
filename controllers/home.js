@@ -11,10 +11,10 @@ module.exports = function (router) {
         UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
-                    teacher.getClassrooms().complete(function (err, classrooms) {
+                    teacher.getSubjects().complete(function (err, subjects) {
                         res.render('home', {
                             user: user,
-                            classrooms: classrooms
+                            classrooms: subjects
                         });
                     });
                 });
@@ -30,8 +30,8 @@ module.exports = function (router) {
         UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
-                    teacher.getClassrooms().complete(function (err, classrooms) {
-                        res.json(classrooms);
+                    teacher.getSubjects().complete(function (err, subjects) {
+                        res.json(subjects);
                     });
                 });
             } else {

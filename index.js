@@ -19,6 +19,7 @@ db
             return console.error(err);
         }
         seeds.executeSeeds().then(function () {
+            console.log('All seeds executed');
             app.listen(port, function (err) {
                 if (err) {
                     return console.error(err);

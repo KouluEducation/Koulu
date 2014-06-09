@@ -3,17 +3,17 @@ var q = require('q'),
 
 module.exports = {
     /**
-     * Creates a specialty and associates it with a classroom if present
+     * Creates a subject and associates it with a classroom if present
      * @param data
      * @param classroom
      */
-    createSubject: function (data) {
+    createSubject: function (data, classroom) {
         var deferred = q.defer();
 
         Subject.findOrCreate({
             name: data.name
-        }).success(function (specialty, created) {
-            deferred.resolve(specialty);
+        }).success(function (subject, created) {
+            deferred.resolve(subject);
         });
 
         return deferred.promise;

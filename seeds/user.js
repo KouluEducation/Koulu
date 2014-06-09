@@ -6,18 +6,51 @@ module.exports = {
     seed: function () {
         var deferred = q.defer();
 
-        var data = {
+        var teacher = {
             email: 'teacher@koulu.com',
             password: 'koulu',
             first_name: 'Profesor',
             last_name: 'Koulu',
-            kind: 'preceptor'
-            // kind: 'teacher'
+            kind: 'teacher'
         };
 
-        UserSrv.createUser(data).then(function (user) {
+        var preceptor = {
+            email: 'preceptor@koulu.com',
+            password: 'koulu',
+            first_name: 'Preceptor',
+            last_name: 'Koulu',
+            kind: 'preceptor'
+        };
+
+        var student = {
+            email: 'student@koulu.com',
+            password: 'koulu',
+            first_name: 'Estudiante',
+            last_name: 'Koulu',
+            kind: 'student'
+        };
+
+        var parent = {
+            email: 'parent@koulu.com',
+            password: 'koulu',
+            first_name: 'Padre',
+            last_name: 'Koulu',
+            kind: 'parent'
+        };
+
+        q.all([
+            UserSrv.createUser(teacher),
+            UserSrv.createUser(preceptor),
+            UserSrv.createUser(student),
+            UserSrv.createUser(parent)
+        ]).then(function (users) {
             console.log('User seed success');
-            deferred.resolve(user);
+            deferred.resolve({
+                teacher: users[0],
+                preceptor: users[1],
+                student: users[2],
+                parent: users[3]
+            });
         }, function (err) {
             console.error('User seed failed');
             deferred.reject(err);

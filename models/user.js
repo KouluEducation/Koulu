@@ -1,6 +1,7 @@
 'use strict';
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt'),
+    q = require('q');
 
 module.exports = function (sequelize, DataTypes) {
     var User = sequelize.define('User', {
@@ -73,6 +74,39 @@ module.exports = function (sequelize, DataTypes) {
              */
             isStudent: function () {
                 return this.kind === 'student';
+            },
+            /**
+             * Associates user with a classroom if acceptable
+             * @param classroom
+             */
+            associateClassroom: function (classroom) {
+                var deferred = q.defer();
+
+                if (this.isPreceptor()) {
+                    this.getPreceptor()
+                        .complete(function (err, preceptor) {
+                            if (err) {
+                                return deferred.reject(err);
+                            }
+                            preceptor.associateClassroom(classroom).then(function (classroom) {
+                                deferred.resolve(classroom);
+                            });
+                        });
+                } else if (this.isStudent()) {
+                    this.getStudent()
+                        .complete(function (err, student) {
+                            if (err) {
+                                return deferred.reject(err);
+                            }
+                            student.associateClassroom(classroom).then(function (classroom) {
+                                deferred.resolve(classroom);
+                            });
+                        });
+                } else {
+                    deferred.resolve(classroom);
+                }
+
+                return deferred.promise;
             }
         }
     });
