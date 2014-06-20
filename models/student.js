@@ -5,7 +5,9 @@ var q = require('q');
 module.exports = function (sequelize, DataTypes) {
     var Student = sequelize.define('Student', {}, {
         classMethods: {
-            associate: function (models) {}
+            associate: function (models) {
+                Student.belongsTo(models.Classroom.hasMany(Student));
+            }
         },
         instanceMethods: {
             /**

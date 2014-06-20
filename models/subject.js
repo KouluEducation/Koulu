@@ -11,7 +11,9 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function (models) {
-                Subject.hasMany(models.Teacher.hasMany(Subject));
+                Subject
+                    .belongsTo(models.Classroom.hasMany(Subject))
+                    .hasMany(models.Teacher.hasMany(Subject));
             }
         },
         instanceMethods: {
@@ -22,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
             associateClassroom: function (classroom) {
                 var deferred = q.defer();
 
-                this.setClassrooms([classroom]).complete(function (err) {
+                this.setClassroom(classroom).complete(function (err) {
                     if (err) {
                         return deferred.reject(err);
                     }
