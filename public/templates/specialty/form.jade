@@ -1,0 +1,27 @@
+extends ../layouts/master
+block title
+  | Nueva especialidad en Koulu
+block body
+  include ../components/header
+  .container.content
+    form(role="form",action="/specialty",method="post")
+      h2 Agregar una especialidad
+      if error.length !== 0
+        .alert.alert-danger
+          = error
+      if success.length !== 0
+        .alert.alert-success
+          = success
+      .form-group
+        label Nombre de la especialidad
+        input.form-control.first(type="text",
+        placeholder="Nombre de la especialidad",
+        name="name",
+        required,
+        autofocus)
+      hr
+      input(type="hidden",name="_csrf",value="#{_csrf}")
+      button.btn.btn-lg.btn-success.btn-block(type="submit") Agregar
+block scripts
+  script(src="/js/header.js")
+block styles

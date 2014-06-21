@@ -2,7 +2,6 @@
 
 var UserSrv = require('../services/user'),
     models = require('../models'),
-    Classroom = models.Classroom,
     Specialty = models.Specialty;
 
 module.exports = function (router) {
@@ -17,22 +16,9 @@ module.exports = function (router) {
             }
             var data = {
                 error: req.flash('error'),
-                success: req.flash('success'),
-                categories: [
-                    {
-                        key: 'primary',
-                        name: 'Primaria'
-                    },
-                    {
-                        key: 'secondary',
-                        name: 'Secundaria'
-                    }
-                ]
+                success: req.flash('success')
             };
-            Specialty.findAll().then(function (specialties) {
-                data.specialties = specialties;
-                res.render('classroom/form', data);
-            });
+            res.render('specialty/form', data);
         });
     });
 
@@ -41,11 +27,11 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('/');
             }
-            Classroom.build(req.body).save().then(function (classroom) {
-                req.flash('success', classroom.name + ' se ha creado correctamente!');
+            Specialty.build(req.body).save().then(function (specialty) {
+                req.flash('success', specialty.name + ' se ha creado correctamente!');
                 res.redirect('back');
             }).error(function () {
-                req.flash('error', 'Error al crear el curso');
+                req.flash('error', 'Error al crear la especialidad');
                 res.redirect('back');
             });
         });
