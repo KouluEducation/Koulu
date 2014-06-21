@@ -16,6 +16,8 @@ module.exports = function (router) {
                 return res.redirect('back');
             }
             var data = {
+                error: req.flash('error'),
+                success: req.flash('success'),
                 categories: [
                     {
                         key: 'primary',
@@ -39,12 +41,13 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('/');
             }
-            Classroom.build(req.body).save().complete(function (err, classroom) {
-                if (err) {
-                    return console.error(err);
-                }
+            Classroom.build(req.body).save().then(function (classroom) {
+                req.flash('success', classroom.name + ' se ha creado correctamente!');
                 res.redirect('back');
-            });
+            }).error(function () {
+                req.flash('error', 'Error al crear el curso');
+                res.redirect('back');
+            })
         });
     });
 

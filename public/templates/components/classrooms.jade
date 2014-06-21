@@ -1,6 +1,9 @@
-#kl-classrooms.col-lg-4.col-md-6.col-sm-12.col-xs-12
-  h1 Cursos
-  a.btn.btn-success(href="/subject/new") Agregar Curso
-  ul
-    each classroom in classrooms
-      li= classroom.name
+#kl-classrooms.panel.panel-default.col-lg-4.col-md-6.col-sm-12.col-xs-12
+  .panel-heading Cursos
+    a.btn.btn-xs.btn-success.pull-right(href="/subject/new") Agregar Curso
+  .panel-body
+    ul.list-group
+      each classroom in classrooms
+        li.list-group-item= classroom.name
+          a.btn.btn-xs(href="/")
+            span.glyphicon.glyphicon-arrow-right

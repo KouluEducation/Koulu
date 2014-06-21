@@ -6,9 +6,12 @@ block body
   .container.content
     form(role="form",action="/subject",method="post")
       h2 Agregar una materia
-      //if error.length !== 0
-      //  .alert.alert-danger
-      //    = error
+      if error.length !== 0
+        .alert.alert-danger
+          = error
+      if success.length !== 0
+        .alert.alert-success
+          = success
       .form-group
         label Nombre de la materia
         input.form-control.first(type="text",
@@ -18,7 +21,7 @@ block body
         autofocus)
       .form-group
         label Curso de la materia
-        select.form-control(name="classroom_id")
+        select.form-control(name="classroom")
           each classroom in classrooms
             option(value="#{classroom.id}")= classroom.name
       .text-left.wanna-sign-up

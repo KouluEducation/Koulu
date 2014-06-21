@@ -6,9 +6,12 @@ block body
   .container.content
     form(role="form",action="/classroom",method="post")
       h2 Agregar un curso
-      //if error.length !== 0
-      //  .alert.alert-danger
-      //    = error
+      if error.length !== 0
+        .alert.alert-danger
+          = error
+      if success.length !== 0
+        .alert.alert-success
+          = success
       .form-group
         label Nombre del curso
         input.form-control.first(type="text",

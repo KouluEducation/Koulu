@@ -89,7 +89,7 @@ module.exports = function (router) {
         }, function (err) {
             req.flash('error', 'Error al crear usuario');
             req.flash('values', req.body);
-            return res.redirect('back');
+            res.redirect('back');
         });
 
     });
