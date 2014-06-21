@@ -1,7 +1,5 @@
 'use strict';
 
-var q = require('q');
-
 module.exports = function (sequelize, DataTypes) {
     var Subject = sequelize.define('Subject', {
         name: {
@@ -28,16 +26,7 @@ module.exports = function (sequelize, DataTypes) {
              * @param classroom
              */
             associateClassroom: function (classroom) {
-                var deferred = q.defer();
-
-                this.setClassroom(classroom).complete(function (err) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    deferred.resolve(classroom);
-                });
-
-                return deferred.promise;
+                return this.setClassroom(classroom);
             }
 
         }

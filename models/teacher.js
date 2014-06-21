@@ -1,7 +1,5 @@
 'use strict';
 
-var q = require('q');
-
 module.exports = function (sequelize, DataTypes) {
     var Teacher = sequelize.define('Teacher', {
         user_id: {
@@ -21,36 +19,20 @@ module.exports = function (sequelize, DataTypes) {
              * @param subject
              */
             associateSubject: function (subject) {
-                var deferred = q.defer();
-
-                this.setSubjects([subject])
-                    .complete(function (err) {
-                        if (err) {
-                            return deferred.reject(err);
-                        }
-                        deferred.resolve(subject);
-                    });
-
-                return deferred.promise;
+                return this.addSubject(subject);
             },
             /**
              * Gets a teacher's subjects
              */
             getClassroomsSubjects: function () {
-                var deferred = q.defer();
-
-                sequelize.query(
+                return sequelize.query(
                     'select s.id as subject_id, c.id as classroom_id, concat(s.name, " (", c.name, ")") as name ' +
                     'from TeacherSubjects st ' +
                     'inner join Subjects s on st.subject_id = s.id ' +
                     'inner join Classrooms c on s.classroom_id = c.id ' +
                     'where teacher_id = ?',
                     null, { raw: true }, [ this.id ]
-                ).success(function (classroomsSubjects) {
-                    deferred.resolve(classroomsSubjects);
-                });
-
-                return deferred.promise;
+                );
             }
         }
     });

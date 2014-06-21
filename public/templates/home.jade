@@ -1,17 +1,15 @@
 extends layouts/master
 
 block title
-  | Koulu
+  | Bienvenido a Koulu!
 
 block body
   include components/header
   .container.content
-    include components/user
+    //include components/user
     include components/classrooms
 
 block scripts
   script(src="/js/header.js")
-  script(src="/js/classrooms.js")
 
 block styles
-  link(rel="stylesheet",href="/css/classrooms.css")

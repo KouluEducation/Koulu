@@ -1,0 +1,32 @@
+extends ../layouts/master
+block title
+  | Nueva materia en Koulu
+block body
+  include ../components/header
+  .container.content
+    form(role="form",action="/subject",method="post")
+      h2 Agregar una materia
+      //if error.length !== 0
+      //  .alert.alert-danger
+      //    = error
+      .form-group
+        label Nombre de la materia
+        input.form-control.first(type="text",
+        placeholder="Nombre de la materia",
+        name="name",
+        required,
+        autofocus)
+      .form-group
+        label Curso de la materia
+        select.form-control(name="classroom_id")
+          each classroom in classrooms
+            option(value="#{classroom.id}")= classroom.name
+      .text-left.wanna-sign-up
+        | No encuentro el curso que necesito, quiero&nbsp;
+        a(href="/classroom/new") agregarlo
+      hr
+      input(type="hidden",name="_csrf",value="#{_csrf}")
+      button.btn.btn-lg.btn-success.btn-block(type="submit") Agregar
+block scripts
+  script(src="/js/header.js")
+block styles

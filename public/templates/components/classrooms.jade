@@ -1,26 +1,6 @@
-//- Assets:
-//- 1) /js/classrooms.js
-//- 2) /css/classrooms.css
-
-script(type="text/javascript").
-  window.klClassrooms = !{JSON.stringify(classrooms)};
-
-#kl-classrooms
+#kl-classrooms.col-lg-4.col-md-6.col-sm-12.col-xs-12
   h1 Cursos
-  button.btn.btn-success.pull-right(data-toggle="modal",data-target="#kl-classroom-modal") Agregar Curso
-  button.btn.btn-danger.pull-right(v-on="click: refresh($event)") Refrescar
+  a.btn.btn-success(href="/subject/new") Agregar Curso
   ul
-    li(v-repeat="classrooms") {{name}}
-
-//- Classroom modal window
-#kl-classroom-modal.modal.fade(tabindex="-1",role="dialog",aria-labelledby="kl-classroom-modal-label",aria-hidden="true")
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close(type="button",data-dismiss="modal",aria-hidden="true") &times;
-        h4#kl-classroom-modal-label.modal-title Agregar curso
-      .modal-body
-        | ...
-      .modal-footer
-        button.btn.btn-default(type="button",data-dismiss="modal") Cancelar
-        button.btn.btn-primary(type="button",v-on="click: add($event)") Guardar
+    each classroom in classrooms
+      li= classroom.name

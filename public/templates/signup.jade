@@ -1,7 +1,10 @@
 extends layouts/master
 
 block title
-  | Bienvenido a Koulu - Registrate
+  | Registrate en Koulu!
 
 block body
   include forms/signup
+
+block styles
+  link(rel="stylesheet",href="/css/forms.css")

@@ -27,18 +27,4 @@ module.exports = function (router) {
         });
     });
 
-    router.get('/classrooms.json', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
-            if (user.isTeacher()) {
-                user.getTeacher().complete(function (err, teacher) {
-                    teacher.getClassroomsSubjects().then(function (classroomsSubjects) {
-                        res.json(classroomsSubjects);
-                    });
-                });
-            } else {
-                res.json([]);
-            }
-        });
-    });
-
 };
