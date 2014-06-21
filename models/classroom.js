@@ -8,10 +8,24 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             unique: true
         },
-        category: DataTypes.ENUM('primary', 'secondary')
+        category: DataTypes.ENUM('primary', 'secondary'),
+        preceptor_id: {
+            type: DataTypes.INTEGER,
+            references: 'Preceptors',
+            referencesKey: 'id'
+        },
+        specialty_id: {
+            type: DataTypes.INTEGER,
+            references: 'Specialties',
+            referencesKey: 'id'
+        }
     }, {
         classMethods: {
             associate: function (models) {
+                Classroom
+                    .hasMany(models.Subject)
+                    .hasMany(models.Student)
+                    .belongsTo(models.Preceptor);
             }
         },
         instanceMethods: {

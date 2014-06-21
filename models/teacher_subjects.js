@@ -3,25 +3,24 @@
 var q = require('q');
 
 module.exports = function (sequelize, DataTypes) {
-    var Test = sequelize.define('Test', {
-        description: DataTypes.STRING,
-        date: DataTypes.DATE,
+    var TeacherSubjects = sequelize.define('TeacherSubjects', {
         subject_id: {
             type: DataTypes.INTEGER,
             references: 'Subjects',
             referencesKey: 'id'
+        },
+        teacher_id: {
+            type: DataTypes.INTEGER,
+            references: 'Teachers',
+            referencesKey: 'id'
         }
     }, {
         classMethods: {
-            associate: function (models) {
-                Test
-                    .hasOne(models.Qualification)
-                    .belongsTo(models.Subject);
-            }
+            associate: function (models) {}
         },
         instanceMethods: {
         }
     });
 
-    return Test;
+    return TeacherSubjects;
 };

@@ -7,13 +7,19 @@ module.exports = function (sequelize, DataTypes) {
         name: {
             type: DataTypes.STRING,
             unique: true
+        },
+        classroom_id: {
+            type: DataTypes.INTEGER,
+            references: 'Classrooms',
+            referencesKey: 'id'
         }
     }, {
         classMethods: {
             associate: function (models) {
                 Subject
-                    .belongsTo(models.Classroom.hasMany(Subject))
-                    .hasMany(models.Teacher.hasMany(Subject));
+                    .belongsTo(models.Classroom)
+                    .hasMany(models.Teacher, { through: models.TeacherSubjects })
+                    .hasMany(models.Test);
             }
         },
         instanceMethods: {

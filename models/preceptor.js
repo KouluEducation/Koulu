@@ -3,10 +3,16 @@
 var q = require('q');
 
 module.exports = function (sequelize, DataTypes) {
-    var Preceptor = sequelize.define('Preceptor', {}, {
+    var Preceptor = sequelize.define('Preceptor', {
+        user_id: {
+            type: DataTypes.INTEGER,
+            references: 'Users',
+            referencesKey: 'id'
+        }
+    }, {
         classMethods: {
             associate: function (models) {
-                Preceptor.hasMany(models.Classroom.belongsTo(Preceptor));
+                Preceptor.hasMany(models.Classroom);
             }
         },
         instanceMethods: {

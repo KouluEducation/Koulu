@@ -12,11 +12,16 @@ module.exports = function (sequelize, DataTypes) {
                 max: 10
             }
         },
-        reviewed: DataTypes.BOOLEAN
+        reviewed: DataTypes.BOOLEAN,
+        test_id: {
+            type: DataTypes.INTEGER,
+            references: 'Tests',
+            referencesKey: 'id'
+        }
     }, {
         classMethods: {
             associate: function (models) {
-                Qualification.belongsTo(models.Test.hasOne(Qualification));
+                Qualification.belongsTo(models.Test);
             }
         },
         instanceMethods: {

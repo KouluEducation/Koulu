@@ -13,18 +13,22 @@ app.use(flash());
 
 db
     .sequelize
-    .sync({ force: true })
-    .complete(function (err) {
-        if (err) {
-            return console.error(err);
-        }
-        seeds.executeSeeds().then(function () {
-            console.log('All seeds executed');
-            app.listen(port, function (err) {
-                if (err) {
-                    return console.error(err);
-                }
-                console.log('[%s] Listening on http://localhost:%d', app.settings.env, port);
-            });
+    .query('SET FOREIGN_KEY_CHECKS = 0')
+    .then(function () {
+        return db.sequelize.sync({ force: true });
+    })
+    .then(function () {
+        return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
+    })
+    .then(function () {
+        return seeds.executeSeeds();
+    })
+    .then(function () {
+        console.log('All seeds executed');
+        app.listen(port, function (err) {
+            if (err) {
+                return console.error(err);
+            }
+            console.log('[%s] Listening on http://localhost:%d', app.settings.env, port);
         });
     });
