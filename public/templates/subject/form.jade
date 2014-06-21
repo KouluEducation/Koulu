@@ -1,11 +1,18 @@
 extends ../layouts/master
 block title
-  | Nueva materia en Koulu
+  if !subject
+    | Nueva materia en Koulu
+  else
+    | Editar materia en Koulu
 block body
   include ../components/header
   .container.content
-    form(role="form",action="/subject",method="post")
-      h2 Agregar una materia
+    - var action = subject ? '/subject/' + subject.id : '/subject'
+    form(role="form",action="#{action}",method="post")
+      if !subject
+        h2 Agregar una materia
+      else
+        h2 Editar materia
       if error.length !== 0
         .alert.alert-danger
           = error
@@ -17,19 +24,22 @@ block body
         input.form-control.first(type="text",
         placeholder="Nombre de la materia",
         name="name",
+        value=subject ? subject.name : ''
         required,
         autofocus)
       .form-group
         label Curso de la materia
         select.form-control(name="classroom")
           each classroom in classrooms
-            option(value="#{classroom.id}")= classroom.name
+            option(value="#{classroom.id}",selected=subject ? subject.classroom_id == classroom.id : false)= classroom.name
       .text-left.wanna-sign-up
         | No encuentro el curso que necesito, quiero&nbsp;
         a(href="/classroom/new") agregarlo
       hr
       input(type="hidden",name="_csrf",value="#{_csrf}")
-      button.btn.btn-lg.btn-success.btn-block(type="submit") Agregar
+      button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
+    if subject
+      button.btn.btn-link.btn-block(type="submit",style="color:#d9534f") Eliminar materia
 block scripts
   script(src="/js/header.js")
 block styles

@@ -4,12 +4,15 @@ var kraken = require('kraken-js'),
     app = require('express')(),
     options = require('./lib/spec')(app),
     flash = require('connect-flash'),
+    moment = require('moment'),
     db = require('./models'),
     seeds = require('./seeds'),
     port = process.env.PORT || 8000;
 
 app.use(kraken(options));
 app.use(flash());
+
+moment.lang('es');
 
 db
     .sequelize

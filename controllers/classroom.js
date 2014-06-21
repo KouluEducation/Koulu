@@ -7,9 +7,6 @@ var UserSrv = require('../services/user'),
 
 module.exports = function (router) {
 
-    /**
-     * Index
-     */
     router.get('/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
@@ -32,6 +29,17 @@ module.exports = function (router) {
             Specialty.findAll().then(function (specialties) {
                 data.specialties = specialties;
                 res.render('classroom/form', data);
+            });
+        });
+    });
+
+    router.get('/:classroom_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
+                return res.redirect('back');
+            }
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                res.send('classroom: ' + classroom.name);
             });
         });
     });

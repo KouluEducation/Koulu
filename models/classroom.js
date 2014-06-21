@@ -1,7 +1,5 @@
 'use strict';
 
-var q = require('q');
-
 module.exports = function (sequelize, DataTypes) {
     var Classroom = sequelize.define('Classroom', {
         name: {
@@ -34,16 +32,17 @@ module.exports = function (sequelize, DataTypes) {
              * @param specialty
              */
             associateSpecialty: function (specialty) {
-                var deferred = q.defer();
-
-                this.setSpecialty(specialty).complete(function (err, classroom) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    deferred.resolve(classroom);
-                });
-
-                return deferred.promise;
+                return this.setSpecialty(specialty);
+            },
+            getAllStudents: function () {
+                return sequelize.query(
+                        'select s.`id` as `student_id`, u.`id` as `user_id`, u.`first_name`, u.`last_name`, u.`email` ' +
+                        'from Students s ' +
+                        'inner join Users u on s.`user_id` = u.`id` ' +
+                        'where s.`classroom_id` = ? ' +
+                        'order by u.`last_name`, u.`first_name`',
+                    null, { raw: true }, [ this.id ]
+                );
             }
         }
     });

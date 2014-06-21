@@ -1,0 +1,9 @@
+#kl-students.panel.panel-default
+  .panel-heading Alumnos (#{students.length})
+    a.btn.btn-xs.btn-success.pull-right(href="/classroom/#{classroom.id}/student/new") Agregar alumno
+  .panel-body
+    ul.list-group
+      each student, index in students
+        li.list-group-item= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
+          a.btn.btn-xs(href="/classroom/#{classroom.id}/student/#{student.student_id}")
+            span.glyphicon.glyphicon-arrow-right

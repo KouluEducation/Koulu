@@ -54,7 +54,7 @@ module.exports = function (router) {
     /**
      * Logout
      */
-    router.delete('/', function (req, res) {
+    router.post('/logout', function (req, res) {
 
         req.session.user = null;
         res.redirect('/');

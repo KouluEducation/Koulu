@@ -1,6 +1,6 @@
 'use strict';
 
-var q = require('q');
+var moment = require('moment');
 
 module.exports = function (sequelize, DataTypes) {
     var Test = sequelize.define('Test', {
@@ -20,6 +20,9 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         instanceMethods: {
+            getDateFormatted: function () {
+                return moment(this.date).format('DD-MM-YYYY');
+            }
         }
     });
 
