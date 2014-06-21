@@ -16,6 +16,7 @@ module.exports = function (router) {
                 return res.redirect('back');
             }
             var data = {
+                deleted: req.flash('deleted'),
                 error: req.flash('error'),
                 success: req.flash('success')
             };
@@ -60,6 +61,7 @@ module.exports = function (router) {
                 return res.redirect('back');
             }
             var data = {
+                deleted: req.flash('deleted'),
                 error: req.flash('error'),
                 success: req.flash('success')
             };
@@ -119,6 +121,27 @@ module.exports = function (router) {
                 return res.redirect('back');
             }).error(function () {
                 req.flash('error', 'Error al editar la materia');
+                res.redirect('back');
+            });
+        });
+    });
+
+    /**
+     * Delete a subject
+     */
+    router.post('/:subject_id/delete', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req).then(function (user) {
+            if (!user.isTeacher()) {
+                return res.redirect('back');
+            }
+            Subject.find(req.params.subject_id).then(function (subject) {
+                return subject.destroy();
+            }).then(function (subject) {
+                req.flash('deleted', true);
+                req.flash('success', subject.name + ' se ha eliminado correctamente!');
+                return res.redirect('back');
+            }).error(function () {
+                req.flash('error', 'Error al eliminar la materia');
                 res.redirect('back');
             });
         });

@@ -2,8 +2,10 @@ extends ../layouts/master
 block title
   if !subject
     | Nueva materia en Koulu
-  else
+  else if deleted.length === 0
     | Editar materia en Koulu
+  else
+    | Materia eliminada de Koulu
 block body
   include ../components/header
   .container.content
@@ -11,35 +13,53 @@ block body
     form(role="form",action="#{action}",method="post")
       if !subject
         h2 Agregar una materia
-      else
+      else if deleted.length === 0
         h2 Editar materia
+      else
+        h2 Materia eliminada
       if error.length !== 0
         .alert.alert-danger
           = error
       if success.length !== 0
         .alert.alert-success
           = success
-      .form-group
-        label Nombre de la materia
-        input.form-control.first(type="text",
-        placeholder="Nombre de la materia",
-        name="name",
-        value=subject ? subject.name : ''
-        required,
-        autofocus)
-      .form-group
-        label Curso de la materia
-        select.form-control(name="classroom")
-          each classroom in classrooms
-            option(value="#{classroom.id}",selected=subject ? subject.classroom_id == classroom.id : false)= classroom.name
-      .text-left.wanna-sign-up
-        | No encuentro el curso que necesito, quiero&nbsp;
-        a(href="/classroom/new") agregarlo
-      hr
-      input(type="hidden",name="_csrf",value="#{_csrf}")
-      button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
-    if subject
-      button.btn.btn-link.btn-block(type="submit",style="color:#d9534f") Eliminar materia
+      if deleted.length === 0
+        .form-group
+          label Nombre de la materia
+          input.form-control.first(type="text",
+          placeholder="Nombre de la materia",
+          name="name",
+          value=subject ? subject.name : ''
+          required,
+          autofocus)
+        .form-group
+          label Curso de la materia
+          select.form-control(name="classroom")
+            each classroom in classrooms
+              option(value="#{classroom.id}",selected=subject ? subject.classroom_id == classroom.id : false)= classroom.name
+        .text-left.wanna-sign-up
+          | No encuentro el curso que necesito, quiero&nbsp;
+          a(href="/classroom/new") agregarlo
+        hr
+        input(type="hidden",name="_csrf",value="#{_csrf}")
+        button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
+    if subject && deleted.length === 0
+      button.btn.btn-link.btn-block(type="button",style="color:#d9534f",data-toggle="modal",data-target="#kl-subject-delete-modal") Eliminar materia
+  if subject && deleted.length === 0
+    #kl-subject-delete-modal.modal(tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4#myModalLabel.modal-title ¡Atención!
+          .modal-body
+            | ¿Está seguro de borrar esta materia?
+            br
+            | Si la borra no habrá vuelta atrás...
+          .modal-footer
+            button.btn.btn-link(type="button",data-dismiss="modal",style="color:white") No, mejor no...
+            a#delete.btn.btn-danger(href="/#/subject/delete",data-subject="#{subject.id}",data-csrf="#{_csrf}") Si, borrar!
+
 block scripts
   script(src="/js/header.js")
+  script(src="/js/subject.js")
 block styles

@@ -7,6 +7,9 @@ var UserSrv = require('../services/user'),
 
 module.exports = function (router) {
 
+    /**
+     * View to create a classroom
+     */
     router.get('/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
@@ -33,6 +36,23 @@ module.exports = function (router) {
         });
     });
 
+    /**
+     * View to create a student
+     */
+    router.get('/:classroom_id/student/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                res.send('classroom: ' + classroom.name);
+            });
+        });
+    });
+
+    /**
+     * Index view of a classroom
+     */
     router.get('/:classroom_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
@@ -44,6 +64,9 @@ module.exports = function (router) {
         });
     });
 
+    /**
+     * Create a classroom
+     */
     router.post('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {

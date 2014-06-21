@@ -30,7 +30,10 @@ module.exports = function (sequelize, DataTypes) {
                     'from TeacherSubjects st ' +
                     'inner join Subjects s on st.subject_id = s.id ' +
                     'inner join Classrooms c on s.classroom_id = c.id ' +
-                    'where teacher_id = ?',
+                    'where st.teacher_id = ?' +
+                    'and st.deleted_at is null ' +
+                    'and s.deleted_at is null ' +
+                    'and c.deleted_at is null ',
                     null, { raw: true }, [ this.id ]
                 );
             }
