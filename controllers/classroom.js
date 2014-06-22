@@ -3,7 +3,9 @@
 var UserSrv = require('../services/user'),
     models = require('../models'),
     Classroom = models.Classroom,
-    Specialty = models.Specialty;
+    Specialty = models.Specialty,
+    Student = models.Student,
+    User = models.User;
 
 module.exports = function (router) {
 
@@ -44,9 +46,53 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
             Classroom.find(req.params.classroom_id).then(function (classroom) {
-                res.send('classroom: ' + classroom.name);
+                data.classroom = classroom;
+                res.render('student/form', data);
             });
+        });
+    });
+
+    /**
+     * View to update a student
+     */
+    router.get('/:classroom_id/student/:student_id/edit', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
+            Student.find({ where: { id: req.params.student_id }, include: [User] }).then(function (student) {
+                data.student = student;
+                if (data.deleted.length !== 0) {
+                    return res.render('student/form', data);
+                }
+                data.student.getClassroom().then(function (classroom) {
+                    data.classroom = classroom;
+                    res.render('student/form', data);
+                });
+            });
+        });
+    });
+
+    /**
+     * Index view of a student
+     */
+    router.get('/:classroom_id/student/:student_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            res.send('Index view of a student');
         });
     });
 

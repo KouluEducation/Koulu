@@ -44,9 +44,9 @@ block body
         input(type="hidden",name="_csrf",value="#{_csrf}")
         button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
     if subject && deleted.length === 0
-      button.btn.btn-link.btn-block(type="button",style="color:#d9534f",data-toggle="modal",data-target="#kl-subject-delete-modal") Eliminar materia
+      button.btn.btn-link.btn-block(type="button",style="color:#d9534f",data-toggle="modal",data-target="#kl-confirm-modal") Eliminar materia
   if subject && deleted.length === 0
-    #kl-subject-delete-modal.modal(tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
+    #kl-confirm-modal.modal(tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
       .modal-dialog
         .modal-content
           .modal-header
@@ -57,9 +57,9 @@ block body
             | Si la borra no habrá vuelta atrás...
           .modal-footer
             button.btn.btn-link(type="button",data-dismiss="modal",style="color:white") No, mejor no...
-            a#delete.btn.btn-danger(href="/#/subject/delete",data-subject="#{subject.id}",data-csrf="#{_csrf}") Si, borrar!
+            a#delete.btn.btn-danger(href="/subject/#{subject.id}/delete",data-csrf="#{_csrf}") Si, borrar!
 
 block scripts
   script(src="/js/header.js")
-  script(src="/js/subject.js")
+  script(src="/js/confirm_modal.js")
 block styles

@@ -40,6 +40,8 @@ module.exports = function (sequelize, DataTypes) {
                         'from Students s ' +
                         'inner join Users u on s.`user_id` = u.`id` ' +
                         'where s.`classroom_id` = ? ' +
+                        'and s.deleted_at is null ' +
+                        'and u.deleted_at is null ' +
                         'order by u.`last_name`, u.`first_name`',
                     null, { raw: true }, [ this.id ]
                 );

@@ -1,9 +1,9 @@
 $(function () {
 
-    $('#kl-subject-delete-modal a#delete').click(function (event) {
+    $('#kl-confirm-modal a#delete').click(function (event) {
         event.preventDefault();
         var form = document.createElement('form');
-        form.action = '/subject/' + event.target.attributes['data-subject'].value + '/delete';
+        form.action = event.target.attributes['href'].value;
         form.method = 'post';
         var csrf = document.createElement('input');
         csrf.type = 'hidden';

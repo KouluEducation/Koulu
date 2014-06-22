@@ -1,0 +1,75 @@
+extends ../layouts/master
+block title
+  if !student
+    | Nuevo alumno en Koulu
+  else if deleted.length === 0
+    | Editar alumno en Koulu
+  else
+    | Alumno eliminado de Koulu
+block body
+  include ../components/header
+  .container.content
+    - var action = student ? '/student/' + student.id : '/student'
+    form(role="form",action="#{action}",method="post")
+      if !student && deleted.length === 0
+        h2 Agregar un alumno a&nbsp;
+          strong #{classroom.name}
+      else if deleted.length === 0
+        h2 Editar alumno de&nbsp;
+          strong #{classroom.name}
+      else
+        h2 Alumno eliminado
+      if error.length !== 0
+        .alert.alert-danger
+          = error
+      if success.length !== 0
+        .alert.alert-success
+          = success
+      if deleted.length === 0
+        .form-group
+          label Nombre del alumno
+          input.form-control.first(type="text",
+          placeholder="Nombre del alumno",
+          name="first_name",
+          value=student ? student.user.first_name : ''
+          required,
+          autofocus)
+        .form-group
+          label Apellido del alumno
+          input.form-control.first(type="text",
+          placeholder="Apellido del alumno",
+          name="last_name",
+          value=student ? student.user.last_name : ''
+          required,
+          autofocus)
+        .form-group
+          label Email del alumno
+          input.form-control.first(type="email",
+          placeholder="Email del alumno",
+          name="email",
+          value=student ? student.user.email : ''
+          required,
+          autofocus)
+        hr
+        input(type="hidden",name="classroom",value="#{classroom.id}")
+        input(type="hidden",name="_csrf",value="#{_csrf}")
+        button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
+    if student && deleted.length === 0
+      button.btn.btn-link.btn-block(type="button",style="color:#d9534f",data-toggle="modal",data-target="#kl-confirm-modal") Eliminar alumno
+  if student && deleted.length === 0
+    #kl-confirm-modal.modal(tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4#myModalLabel.modal-title ¡Atención!
+          .modal-body
+            | ¿Está seguro de borrar este alumno?
+            br
+            | Si lo borra no habrá vuelta atrás...
+          .modal-footer
+            button.btn.btn-link(type="button",data-dismiss="modal",style="color:white") No, mejor no...
+            a#delete.btn.btn-danger(href="/student/#{student.id}/delete",data-csrf="#{_csrf}") Si, borrar!
+block scripts
+  script(src="/js/header.js")
+  script(src="/js/confirm_modal.js")
+block styles
