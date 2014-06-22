@@ -9,10 +9,11 @@ block body
       | de&nbsp;
       strong #{classroom.name}
       a.btn.btn-default.btn-xs.pull-right(href="/subject/#{subject.id}/edit") Editar materia
-    .col-lg-6.col-md-6.col-sm-12.col-xs-12
-      include ../components/students
-    .pull-right.col-lg-6.col-md-6.col-sm-12.col-xs-12
-      include tabs
+    .row
+      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+        include ../components/students
+      .pull-right.col-lg-6.col-md-6.col-sm-12.col-xs-12
+        include tabs
 
 block scripts
   script(src="/js/header.js")

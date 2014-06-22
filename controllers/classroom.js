@@ -4,6 +4,7 @@ var UserSrv = require('../services/user'),
     models = require('../models'),
     Classroom = models.Classroom,
     Specialty = models.Specialty,
+    Subject = models.Subject,
     Student = models.Student,
     User = models.User;
 
@@ -71,28 +72,45 @@ module.exports = function (router) {
                 error: req.flash('error'),
                 success: req.flash('success')
             };
-            Student.find({ where: { id: req.params.student_id }, include: [User] }).then(function (student) {
+            Student.find({ where: { id: req.params.student_id }, include: [User, Classroom] }).then(function (student) {
                 data.student = student;
-                if (data.deleted.length !== 0) {
-                    return res.render('student/form', data);
-                }
-                data.student.getClassroom().then(function (classroom) {
-                    data.classroom = classroom;
-                    res.render('student/form', data);
-                });
+                return res.render('student/form', data);
             });
         });
     });
 
     /**
-     * Index view of a student
+     * Index view of a student (subject view)
+     */
+    router.get('/:classroom_id/subject/:subject_id/student/:student_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
+        UserSrv.getUser(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            var data = {};
+            Student.find({ where: { id: req.params.student_id }, include: [User, Classroom] }).then(function (student) {
+                data.student = student;
+                return Subject.find(req.params.subject_id);
+            }).then(function (subject) {
+                data.subject = subject;
+                res.render('student/item_by_subject', data);
+            });
+        });
+    });
+
+    /**
+     * Index view of a student (general view)
      */
     router.get('/:classroom_id/student/:student_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
-            res.send('Index view of a student');
+            Student.find({ where: { id: req.params.student_id }, include: [User, Classroom] }).then(function (student) {
+                res.render('student/item_general', {
+                    student: student
+                });
+            });
         });
     });
 

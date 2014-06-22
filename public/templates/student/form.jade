@@ -13,10 +13,10 @@ block body
     form(role="form",action="#{action}",method="post")
       if !student && deleted.length === 0
         h2 Agregar un alumno a&nbsp;
-          strong #{classroom.name}
+          strong #{student ? student.classroom.name : classroom.name}
       else if deleted.length === 0
         h2 Editar alumno de&nbsp;
-          strong #{classroom.name}
+          strong #{student ? student.classroom.name : classroom.name}
       else
         h2 Alumno eliminado
       if error.length !== 0
@@ -51,7 +51,7 @@ block body
           required,
           autofocus)
         hr
-        input(type="hidden",name="classroom",value="#{classroom.id}")
+        input(type="hidden",name="classroom",value="#{student ? student.classroom.id : classroom.id}")
         input(type="hidden",name="_csrf",value="#{_csrf}")
         button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
     if student && deleted.length === 0

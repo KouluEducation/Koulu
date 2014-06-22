@@ -6,10 +6,11 @@ block title
 block body
   include components/header
   .container.content
-    .col-lg-4.col-md-6.col-sm-12.col-xs-12
-      include components/classrooms
-    .pull-right.col-lg-8.col-md-6.col-sm-12.col-xs-12
-      include components/tabs
+    .row
+      .col-lg-4.col-md-6.col-sm-12.col-xs-12
+        include components/classrooms
+      .pull-right.col-lg-8.col-md-6.col-sm-12.col-xs-12
+        include components/tabs
 
 block scripts
   script(src="/js/header.js")

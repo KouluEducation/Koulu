@@ -1,0 +1,49 @@
+extends ../layouts/master
+block title
+  | #{student.user.last_name}, #{student.user.first_name} (#{student.classroom.name}) en Koulu
+block body
+  include ../components/header
+  .container.content
+    h2
+      strong #{student.user.last_name}, #{student.user.first_name}&nbsp;
+      | (#{student.classroom.name})
+      a.btn.btn-default.btn-xs.pull-right(href="/classroom/#{student.classroom.id}/student/#{student.id}/edit") Editar alumno
+    h3 #{subject.name}
+    .row
+      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+        .panel.panel-default
+          .panel-heading
+            h4 Promedio 1er trimestre
+          .panel-body
+            h3
+              strong 6,00
+      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+        .panel.panel-default
+          .panel-heading
+            h4 Promedio 2do trimestre
+          .panel-body
+            h3
+              strong 7,66
+      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+        .panel.panel-default
+          .panel-heading
+            h4 Promedio 3er trimestre
+          .panel-body
+            h3
+              strong n/a
+      .col-lg-12.col-md-12.col-sm-12.col-xs-12
+        .panel.panel-default
+          .panel-body
+            ul.nav.nav-tabs
+              li.active
+                a(href="#qualification",data-toggle="tab") Calificaciones
+              li
+                a(href="#banns",data-toggle="tab") Notificaciones
+            .tab-content(style="margin-top:5px")
+              #qualification.tab-pane.active
+                | Calificaciones
+              #banns.tab-pane
+                | Notificaciones
+block scripts
+  script(src="/js/header.js")
+block styles
