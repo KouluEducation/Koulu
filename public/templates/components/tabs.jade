@@ -4,11 +4,12 @@
       li.active
         a(href="#message",data-toggle="tab") Mensaje a curso
       li
-        a(href="#test",data-toggle="tab") Evaluación
-      li
-        a(href="#file",data-toggle="tab") Material de estudio
-      li
         a(href="#notification",data-toggle="tab") Enviar notificación
+      if user.isTeacher()
+        li
+          a(href="#file",data-toggle="tab") Material de estudio
+        li
+          a(href="#test",data-toggle="tab") Evaluación
     .tab-content(style="margin-top:5px")
       #message.tab-pane.active
         textarea.form-control(rows="3",placeholder="Mensaje...")
