@@ -15,7 +15,6 @@ module.exports = function (router) {
      * Index
      */
     router.get('/', function (req, res) {
-
         if (!req.session.user) {
             res.render('index', {
                 error: req.flash('error'),
@@ -25,14 +24,12 @@ module.exports = function (router) {
         } else {
             res.redirect('/home');
         }
-
     });
 
     /**
      * Login
      */
     router.post('/', function (req, res) {
-
         User.find({ where: { email: req.body.email } })
             .complete(function (err, user) {
                 if (err) {
@@ -55,26 +52,21 @@ module.exports = function (router) {
      * Logout
      */
     router.post('/logout', function (req, res) {
-
         req.session.user = null;
         res.redirect('/');
-
     });
 
     /**
      * Sign up index
      */
     router.get('/signup', function (req, res) {
-
         res.render('signup', {
             error: req.flash('error'),
             values: req.flash('values')[0]
         });
-
     });
 
     router.post('/signup', function (req, res) {
-
         var data = {
             email: req.body.email,
             password: req.body.password,
@@ -82,7 +74,6 @@ module.exports = function (router) {
             last_name: req.body.last_name,
             kind: req.body.kind
         };
-
         UserSrv.createUser(data).then(function (user) {
             req.flash('success', 'Bienvenido a Koulu!');
             res.redirect('/');
@@ -91,7 +82,6 @@ module.exports = function (router) {
             req.flash('values', req.body);
             res.redirect('back');
         });
-
     });
 
 };

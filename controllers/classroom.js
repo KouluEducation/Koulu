@@ -107,7 +107,7 @@ module.exports = function (router) {
                 return res.redirect('back');
             }
             Student.find({ where: { id: req.params.student_id }, include: [User, Classroom] }).then(function (student) {
-                res.render('student/item_general', {
+                res.render('student/item_by_classroom', {
                     student: student
                 });
             });

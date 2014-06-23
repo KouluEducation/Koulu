@@ -12,17 +12,14 @@ module.exports = function (router) {
             if (user.isTeacher()) {
                 user.getTeacher().complete(function (err, teacher) {
                     teacher.getClassroomsSubjects().then(function (classroomsSubjects) {
-                        res.render('home', {
+                        res.render('home_teacher', {
                             user: user,
                             classrooms: classroomsSubjects
                         });
                     });
                 });
             } else {
-                res.render('home', {
-                    user: user,
-                    classrooms: []
-                });
+                res.send('Ups! There is no home for your kind of user yet...');
             }
         });
     });
