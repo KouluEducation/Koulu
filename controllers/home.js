@@ -18,6 +18,15 @@ module.exports = function (router) {
                         });
                     });
                 });
+            } else if (user.isPreceptor()) {
+                user.getPreceptor().complete(function (err,preceptor) {
+                    preceptor.getClassrooms().then(function (classroomSubjects) {
+                        res.render('home_preceptor', {
+                            user: user,
+                            classrooms: classroomSubjects
+                        });
+                    });
+                });
             } else {
                 res.send('Ups! There is no home for your kind of user yet...');
             }
