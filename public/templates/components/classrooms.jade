@@ -1,9 +1,10 @@
 #kl-classrooms.panel.panel-default
+  - var baseUrl = user.isTeacher() ? '/subject' : '/classroom'
   .panel-heading Cursos
-    a.btn.btn-xs.btn-success.pull-right(href="/subject/new") Agregar curso
+    a.btn.btn-xs.btn-success.pull-right(href="#{baseUrl}/new") Agregar curso
   .panel-body
     ul.list-group
       each classroom in classrooms
         li.list-group-item= classroom.name
-          a.btn.btn-xs(href="/subject/#{classroom.subject_id}")
+          a.btn.btn-xs(href="#{baseUrl}/#{classroom.id}")
             span.glyphicon.glyphicon-arrow-right

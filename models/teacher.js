@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
              */
             getClassroomsSubjects: function () {
                 return sequelize.query(
-                    'select s.id as subject_id, c.id as classroom_id, concat(s.name, " (", c.name, ")") as name ' +
+                    'select s.id as id, c.id as classroom_id, concat(s.name, " (", c.name, ")") as name ' +
                     'from TeacherSubjects st ' +
                     'inner join Subjects s on st.subject_id = s.id ' +
                     'inner join Classrooms c on s.classroom_id = c.id ' +

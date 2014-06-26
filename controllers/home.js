@@ -10,21 +10,21 @@ module.exports = function (router) {
     router.get('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
         UserSrv.getUser(req).then(function (user) {
             if (user.isTeacher()) {
-                user.getTeacher().complete(function (err, teacher) {
-                    teacher.getClassroomsSubjects().then(function (classroomsSubjects) {
-                        res.render('home_teacher', {
-                            user: user,
-                            classrooms: classroomsSubjects
-                        });
+                user.getTeacher().then(function (teacher) {
+                    return teacher.getClassroomsSubjects();
+                }).then(function (classroomsSubjects) {
+                    res.render('home_teacher', {
+                        user: user,
+                        classrooms: classroomsSubjects
                     });
                 });
             } else if (user.isPreceptor()) {
-                user.getPreceptor().complete(function (err,preceptor) {
-                    preceptor.getClassrooms().then(function (classroomSubjects) {
-                        res.render('home_preceptor', {
-                            user: user,
-                            classrooms: classroomSubjects
-                        });
+                user.getPreceptor().then(function (preceptor) {
+                    return preceptor.getClassrooms();
+                }).then(function (classrooms) {
+                    res.render('home_preceptor', {
+                        user: user,
+                        classrooms: classrooms
                     });
                 });
             } else {
