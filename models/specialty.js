@@ -14,5 +14,18 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
 
+    /* Static methods */
+
+    /**
+     * Creates a specialty
+     * @param data
+     * @returns {Promise}
+     */
+    Specialty.createOne = function (data) {
+        return Specialty.findOrCreate({
+            name: data.name
+        });
+    };
+
     return Specialty;
 };

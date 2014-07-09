@@ -1,7 +1,6 @@
 'use strict';
 
-var User = require('../models').User,
-    UserSrv = require('../services/user');
+var User = require('../models').User;
 
 var flushFlash = function (request) {
     request.flash('error', null);
@@ -74,7 +73,7 @@ module.exports = function (router) {
             last_name: req.body.last_name,
             kind: req.body.kind
         };
-        UserSrv.createUser(data).then(function (user) {
+        User.createOne(data).then(function (user) {
             req.flash('success', 'Bienvenido a Koulu!');
             res.redirect('/');
         }, function (err) {

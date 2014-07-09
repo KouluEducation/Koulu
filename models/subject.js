@@ -24,6 +24,7 @@ module.exports = function (sequelize, DataTypes) {
             /**
              * Associates a classroom to a subject
              * @param classroom
+             * @returns {Promise}
              */
             associateClassroom: function (classroom) {
                 return this.setClassroom(classroom);
@@ -31,6 +32,19 @@ module.exports = function (sequelize, DataTypes) {
 
         }
     });
+
+    /* Static methods */
+
+    /**
+     * Creates a subject
+     * @param data
+     * @returns {Promise}
+     */
+    Subject.createOne = function (data) {
+        return Subject.findOrCreate({
+            name: data.name
+        });
+    };
 
     return Subject;
 };

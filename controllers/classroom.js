@@ -1,7 +1,6 @@
 'use strict';
 
-var UserSrv = require('../services/user'),
-    models = require('../models'),
+var models = require('../models'),
     Classroom = models.Classroom,
     Specialty = models.Specialty,
     Subject = models.Subject,
@@ -13,8 +12,8 @@ module.exports = function (router) {
     /**
      * View to create a classroom
      */
-    router.get('/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/new', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
@@ -42,8 +41,8 @@ module.exports = function (router) {
     /**
      * View to create a student
      */
-    router.get('/:classroom_id/student/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:classroom_id/student/new', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
@@ -62,8 +61,8 @@ module.exports = function (router) {
     /**
      * View to update a student
      */
-    router.get('/:classroom_id/student/:student_id/edit', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:classroom_id/student/:student_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
@@ -82,8 +81,8 @@ module.exports = function (router) {
     /**
      * Index view of a student (subject view)
      */
-    router.get('/:classroom_id/subject/:subject_id/student/:student_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:classroom_id/subject/:subject_id/student/:student_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
@@ -101,8 +100,8 @@ module.exports = function (router) {
     /**
      * Index view of a student (general view)
      */
-    router.get('/:classroom_id/student/:student_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:classroom_id/student/:student_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
@@ -117,8 +116,8 @@ module.exports = function (router) {
     /**
      * Index view of a classroom
      */
-    router.get('/:classroom_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:classroom_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
                 return res.redirect('back');
             }
@@ -131,8 +130,8 @@ module.exports = function (router) {
     /**
      * Create a classroom
      */
-    router.post('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.post('/', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('/');
             }

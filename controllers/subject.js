@@ -1,7 +1,7 @@
 'use strict';
 
-var UserSrv = require('../services/user'),
-    models = require('../models'),
+var models = require('../models'),
+    User = models.User,
     Classroom = models.Classroom,
     Subject = models.Subject;
 
@@ -10,8 +10,8 @@ module.exports = function (router) {
     /**
      * View to create a subject
      */
-    router.get('/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/new', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher()) {
                 return res.redirect('back');
             }
@@ -30,8 +30,8 @@ module.exports = function (router) {
     /**
      * Index view of a subject
      */
-    router.get('/:subject_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:subject_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
                 return res.redirect('back');
             }
@@ -55,8 +55,8 @@ module.exports = function (router) {
     /**
      * View to update a subject
      */
-    router.get('/:subject_id/edit', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/:subject_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher()) {
                 return res.redirect('back');
             }
@@ -81,8 +81,8 @@ module.exports = function (router) {
     /**
      * Create a subject
      */
-    router.post('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.post('/', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher()) {
                 return res.redirect('back');
             }
@@ -107,8 +107,8 @@ module.exports = function (router) {
     /**
      * Update a subject
      */
-    router.post('/:subject_id', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.post('/:subject_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher()) {
                 return res.redirect('back');
             }
@@ -129,8 +129,8 @@ module.exports = function (router) {
     /**
      * Delete a subject
      */
-    router.post('/:subject_id/delete', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.post('/:subject_id/delete', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher()) {
                 return res.redirect('back');
             }

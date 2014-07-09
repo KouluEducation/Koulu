@@ -1,12 +1,12 @@
-var SubjectSrv = require('../services/subject');
+var Subject = require('../models').Subject;
 
 module.exports = {
 
-    seed: function (classroom) {
+    seed: function () {
         var data = {
             name: 'Laboratorio de Programación'
         };
-        return SubjectSrv.createSubject(data);
+        return Subject.createOne(data);
     }
 
 };

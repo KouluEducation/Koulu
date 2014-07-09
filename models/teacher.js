@@ -17,12 +17,14 @@ module.exports = function (sequelize, DataTypes) {
             /**
              * Associates a teacher to a subject
              * @param subject
+             * @returns {Promise}
              */
             associateSubject: function (subject) {
                 return this.addSubject(subject);
             },
             /**
              * Gets a teacher's subjects
+             * @returns {Promise}
              */
             getClassroomsSubjects: function () {
                 return sequelize.query(
@@ -39,6 +41,19 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     });
+
+    /* Static methods */
+
+    /**
+     * Creates an instance of Teacher
+     * @param user
+     * @returns {Promise}
+     */
+    Teacher.createOne = function (user) {
+        return Teacher.create({}).then(function (teacher) {
+            return user.setTeacher(teacher);
+        });
+    };
 
     return Teacher;
 };

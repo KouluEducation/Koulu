@@ -1,7 +1,7 @@
 'use strict';
 
-var UserSrv = require('../services/user'),
-    models = require('../models'),
+var models = require('../models'),
+    User = models.User,
     Specialty = models.Specialty;
 
 module.exports = function (router) {
@@ -9,8 +9,8 @@ module.exports = function (router) {
     /**
      * Index
      */
-    router.get('/new', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/new', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
@@ -22,8 +22,8 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.post('/', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('/');
             }

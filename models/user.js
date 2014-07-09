@@ -78,6 +78,7 @@ module.exports = function (sequelize, DataTypes) {
             /**
              * Associates a user to a classroom if acceptable
              * @param classroom
+             * @returns {Promise}
              */
             associateClassroom: function (classroom) {
                 if (this.isPreceptor()) {
@@ -95,6 +96,7 @@ module.exports = function (sequelize, DataTypes) {
             /**
              * Associates a user to a subject if acceptable
              * @param subject
+             * @returns {Promise}
              */
             associateSubject: function (subject) {
                 if (this.isTeacher()) {
@@ -107,6 +109,68 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     });
+
+    /* Static methods */
+
+    /**
+     * Redirects if there is no user logged in
+     * @returns {Function}
+     */
+    User.isAuthenticated = function () {
+        return function (req, res, next) {
+            if (req.session.user) {
+                next();
+            } else {
+                res.redirect('/');
+            }
+        };
+    };
+
+    /**
+     * A helper method to add the user to the response context so we don't have to manually do it.
+     * @returns {injectUser}
+     */
+    User.inject = function () {
+        return function injectUser(req, res, next) {
+            res.locals.user = req.session.user;
+            next();
+        };
+    };
+
+    /**
+     * Return logged in user
+     * @param request
+     * @returns {Promise}
+     */
+    User.getCurrent = function (request) {
+        return User.find(request.session.user.id);
+    };
+
+    /**
+     * Creates a user and it's specific kind
+     * @param data
+     * @returns {Promise}
+     */
+    User.createOne = function (data) {
+        var models = require('../models');
+        return User.build({
+            email: data.email,
+            password: data.password,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            kind: data.kind
+        }).save().then(function (user) {
+            if (user.isTeacher()) {
+                return models.Teacher.createOne(user);
+            } else if (user.isPreceptor()) {
+                return models.Preceptor.createOne(user);
+            } else if (user.isParent()) {
+                return models.Parent.createOne(user);
+            } else if (user.isStudent()) {
+                return models.Student.createOne(user);
+            }
+        });
+    };
 
     return User;
 };

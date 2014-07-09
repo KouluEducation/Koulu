@@ -1,4 +1,4 @@
-var ClassroomSrv = require('../services/classroom');
+var Classroom = require('../models').Classroom;
 
 module.exports = {
 
@@ -7,7 +7,7 @@ module.exports = {
             name: '4to "C"',
             category: 'secondary'
         };
-        return ClassroomSrv.createClassroom(data);
+        return Classroom.createOne(data);
     }
 
 };

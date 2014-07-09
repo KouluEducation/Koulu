@@ -20,6 +20,10 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         instanceMethods: {
+            /**
+             * Gets the tests date in latin format
+             * @returns {string}
+             */
             getDateFormatted: function () {
                 return moment(this.date).format('DD-MM-YYYY');
             }

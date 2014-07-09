@@ -15,5 +15,18 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
 
+    /* Static methods */
+
+    /**
+     * Creates an instance of Parent
+     * @param user
+     * @returns {Promise}
+     */
+    Parent.createOne = function (user) {
+        return Parent.create({}).then(function (parent) {
+            return user.setParent(parent);
+        });
+    };
+
     return Parent;
 };

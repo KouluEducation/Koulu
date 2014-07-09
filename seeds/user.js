@@ -1,5 +1,5 @@
 var q = require('q'),
-    UserSrv = require('../services/user');
+    User = require('../models').User;
 
 module.exports = {
 
@@ -39,12 +39,11 @@ module.exports = {
         };
 
         q.all([
-            UserSrv.createUser(teacher),
-            UserSrv.createUser(preceptor),
-            UserSrv.createUser(student),
-            UserSrv.createUser(parent)
+            User.createOne(teacher),
+            User.createOne(preceptor),
+            User.createOne(student),
+            User.createOne(parent)
         ]).then(function (users) {
-            console.log('User seed success');
             deferred.resolve({
                 teacher: users[0],
                 preceptor: users[1],
@@ -52,7 +51,6 @@ module.exports = {
                 parent: users[3]
             });
         }, function (err) {
-            console.error('User seed failed');
             deferred.reject(err);
         });
 

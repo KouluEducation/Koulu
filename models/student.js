@@ -24,12 +24,26 @@ module.exports = function (sequelize, DataTypes) {
             /**
              * Associates a student to a classroom
              * @param classroom
+             * @returns {Promise}
              */
             associateClassroom: function (classroom) {
                 return this.setClassroom(classroom);
             }
         }
     });
+
+    /* Static methods */
+
+    /**
+     * Creates an instance of Student
+     * @param user
+     * @returns {Promise}
+     */
+    Student.createOne = function (user) {
+        return Student.create({}).then(function (student) {
+            return user.setStudent(student);
+        });
+    };
 
     return Student;
 };

@@ -1,14 +1,14 @@
 'use strict';
 
-var UserSrv = require('../services/user');
+var User = require('../models').User;
 
 module.exports = function (router) {
 
     /**
      * Index
      */
-    router.get('/', UserSrv.isAuthenticated(), UserSrv.injectUser(), function (req, res) {
-        UserSrv.getUser(req).then(function (user) {
+    router.get('/', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
             if (user.isTeacher()) {
                 user.getTeacher().then(function (teacher) {
                     return teacher.getClassroomsSubjects();

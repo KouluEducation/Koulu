@@ -1,4 +1,4 @@
-var Specialty = require('../services/specialty');
+var Specialty = require('../models').Specialty;
 
 module.exports = {
 
@@ -6,7 +6,7 @@ module.exports = {
         var data = {
             name: 'Informática'
         };
-        return Specialty.createSpecialty(data);
+        return Specialty.createOne(data);
     }
 
 };

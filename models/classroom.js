@@ -30,10 +30,15 @@ module.exports = function (sequelize, DataTypes) {
             /**
              * Associates specialty to a classroom
              * @param specialty
+             * @returns {Promise}
              */
             associateSpecialty: function (specialty) {
                 return this.setSpecialty(specialty);
             },
+            /**
+             * Gets a classroom's students
+             * @returns {Promise}
+             */
             getAllStudents: function () {
                 return sequelize.query(
                         'select s.`id` as `student_id`, u.`id` as `user_id`, u.`first_name`, u.`last_name`, u.`email` ' +
@@ -48,6 +53,20 @@ module.exports = function (sequelize, DataTypes) {
             }
         }
     });
+
+    /* Static methods */
+
+    /**
+     * Creates a classroom
+     * @param data
+     * @returns {Promise}
+     */
+    Classroom.createOne = function (data) {
+        return Classroom.build({
+            name: data.name,
+            category: data.category
+        }).save();
+    };
 
     return Classroom;
 };
