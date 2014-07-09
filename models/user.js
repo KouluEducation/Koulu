@@ -80,54 +80,30 @@ module.exports = function (sequelize, DataTypes) {
              * @param classroom
              */
             associateClassroom: function (classroom) {
-                var deferred = q.defer();
-
                 if (this.isPreceptor()) {
-                    this.getPreceptor()
-                        .complete(function (err, preceptor) {
-                            if (err) {
-                                return deferred.reject(err);
-                            }
-                            preceptor.associateClassroom(classroom).then(function (classroom) {
-                                deferred.resolve(classroom);
-                            });
-                        });
+                    return this.getPreceptor().then(function (preceptor) {
+                        return preceptor.associateClassroom(classroom);
+                    });
                 } else if (this.isStudent()) {
-                    this.getStudent()
-                        .complete(function (err, student) {
-                            if (err) {
-                                return deferred.reject(err);
-                            }
-                            student.associateClassroom(classroom).then(function (classroom) {
-                                deferred.resolve(classroom);
-                            });
-                        });
+                    return this.getStudent().then(function (student) {
+                        return student.associateClassroom(classroom);
+                    });
                 } else {
-                    deferred.resolve(classroom);
+                    return q.defer().resolve(classroom);
                 }
-
-                return deferred.promise;
             },
             /**
              * Associates a user to a subject if acceptable
              * @param subject
              */
             associateSubject: function (subject) {
-                var deferred = q.defer();
-
                 if (this.isTeacher()) {
-                    this.getTeacher()
-                        .complete(function (err, teacher) {
-                            if (err) {
-                                return deferred.reject(err);
-                            }
-                            teacher.associateSubject(subject).then(function (subject) {
-                                deferred.resolve(subject);
-                            });
-                        });
+                    return this.getTeacher().then(function (teacher) {
+                        return teacher.associateSubject(subject);
+                    });
+                } else {
+                    return q.defer().resolve(subject);
                 }
-
-                return deferred.promise;
             }
         }
     });

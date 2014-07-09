@@ -1,7 +1,5 @@
 'use strict';
 
-var q = require('q');
-
 module.exports = function (sequelize, DataTypes) {
     var Preceptor = sequelize.define('Preceptor', {
         user_id: {
@@ -21,17 +19,7 @@ module.exports = function (sequelize, DataTypes) {
              * @param classroom
              */
             associateClassroom: function (classroom) {
-                var deferred = q.defer();
-
-                classroom.setPreceptor(this)
-                    .complete(function (err) {
-                        if (err) {
-                            return deferred.reject(err);
-                        }
-                        deferred.resolve(classroom);
-                    });
-
-                return deferred.promise;
+                return classroom.setPreceptor(this);
             },
             /**
              * Gets a preceptor's classrooms

@@ -1,7 +1,5 @@
 'use strict';
 
-var q = require('q');
-
 module.exports = function (sequelize, DataTypes) {
     var Qualification = sequelize.define('Qualification', {
         mark: {

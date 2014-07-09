@@ -1,7 +1,6 @@
 'use strict';
 
-var q = require('q'),
-    models = require('../models'),
+var models = require('../models'),
     User = models.User,
     Teacher = models.Teacher,
     Parent = models.Parent,
@@ -38,40 +37,22 @@ module.exports = {
      * @returns promise
      */
     getUser: function (request) {
-        var deferred = q.defer();
-
-        User.find(request.session.user.id).complete(function (err, user) {
-            if (err) {
-                return deferred.reject(err);
-            }
-            deferred.resolve(user);
-        });
-
-        return deferred.promise;
+        return User.find(request.session.user.id);
     },
     /**
      * Creates a user and it's specific kind
      * @param data
      */
     createUser: function (data) {
-        var deferred = q.defer();
-
-        User.build({
+        return User.build({
             email: data.email,
             password: data.password,
             first_name: data.first_name,
             last_name: data.last_name,
             kind: data.kind
-        }).save().complete(function (err, user) {
-            if (err) {
-                deferred.reject(err);
-            }
-            createUserKind(user).then(function (user) {
-                deferred.resolve(user);
-            });
+        }).save().then(function (user) {
+            return createUserKind(user);
         });
-
-        return deferred.promise;
     }
 };
 
@@ -82,45 +63,21 @@ module.exports = {
  * @param user
  */
 var createUserKind = function (user) {
-    var deferred = q.defer();
-
     if (user.isTeacher()) {
-        Teacher.create({}).complete(function (err, teacher) {
-            user.setTeacher(teacher).complete(function (err) {
-                if (err) {
-                    return deferred.reject(err);
-                }
-                deferred.resolve(user);
-            });
+        return Teacher.create({}).then(function (teacher) {
+            return user.setTeacher(teacher);
         });
     } else if (user.isPreceptor()) {
-        Preceptor.create({}).complete(function (err, preceptor) {
-            user.setPreceptor(preceptor).complete(function (err) {
-                if (err) {
-                    return deferred.reject(err);
-                }
-                deferred.resolve(user);
-            });
+        return Preceptor.create({}).then(function (preceptor) {
+            return user.setPreceptor(preceptor);
         });
     } else if (user.isParent()) {
-        Parent.create({}).complete(function (err, parent) {
-            user.setParent(parent).complete(function (err) {
-                if (err) {
-                    return deferred.reject(err);
-                }
-                deferred.resolve(user);
-            });
+        return Parent.create({}).then(function (parent) {
+            return user.setParent(parent);
         });
     } else if (user.isStudent()) {
-        Student.create({}).complete(function (err, student) {
-            user.setStudent(student).complete(function (err) {
-                if (err) {
-                    return deferred.reject(err);
-                }
-                deferred.resolve(user);
-            });
+        return Student.create({}).then(function (student) {
+            return user.setStudent(student);
         });
     }
-
-    return deferred.promise;
 };

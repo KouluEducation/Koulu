@@ -1,7 +1,5 @@
 'use strict';
 
-var q = require('q');
-
 module.exports = function (sequelize, DataTypes) {
     var TeacherSubjects = sequelize.define('TeacherSubjects', {
         subject_id: {
