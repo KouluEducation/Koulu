@@ -27,7 +27,7 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('/');
             }
-            Specialty.build(req.body).save().then(function (specialty) {
+            Specialty.createOne(req.body).then(function (specialty) {
                 req.flash('success', specialty.name + ' se ha creado correctamente!');
                 res.redirect('back');
             }).error(function () {

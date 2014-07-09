@@ -2,7 +2,8 @@
 
 var models = require('../models'),
     User = models.User,
-    Student = models.Student;
+    Student = models.Student,
+    Classroom = models.Classroom;
 
 module.exports = function (router) {
 
@@ -22,11 +23,10 @@ module.exports = function (router) {
                 password: Math.floor((Math.random() * 999999) + 100000).toString(),
                 kind: 'student'
             };
-            User.build(data).save().then(function (user) {
-                data.user = user;
-                return Student.build(data).save();
-            }).then(function (student) {
-                return student.setUser(data.user);
+            User.createOne(data).then(function (user) {
+                return Classroom.find(data.classroom_id).then(function (classroom) {
+                    return user.setClassroom(classroom);
+                });
             }).then(function () {
                 // TODO: send a welcome email to the new student
                 req.flash('success', data.first_name + ' ' + data.last_name + ' se ha agregado correctamente!');
@@ -59,7 +59,7 @@ module.exports = function (router) {
             }).then(function (user) {
                 req.flash('success', user.first_name + ' ' + user.last_name + ' se ha editado correctamente!');
                 return res.redirect('back');
-            }).error(function (err) {
+            }).error(function () {
                 req.flash('error', 'Error al editar el alumno');
                 res.redirect('back');
             });

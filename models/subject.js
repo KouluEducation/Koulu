@@ -42,7 +42,8 @@ module.exports = function (sequelize, DataTypes) {
      */
     Subject.createOne = function (data) {
         return Subject.findOrCreate({
-            name: data.name
+            name: data.name,
+            classroom_id: data.classroom_id
         });
     };
 

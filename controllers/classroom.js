@@ -135,7 +135,7 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('/');
             }
-            Classroom.build(req.body).save().then(function (classroom) {
+            Classroom.createOne(req.body).then(function (classroom) {
                 req.flash('success', classroom.name + ' se ha creado correctamente!');
                 res.redirect('back');
             }).error(function () {

@@ -90,7 +90,7 @@ module.exports = function (router) {
                 name: req.body.name,
                 classroom_id: req.body.classroom
             };
-            Subject.build(data).save().then(function (subject) {
+            Subject.createOne(data).then(function (subject) {
                 return user.getTeacher().then(function (teacher) {
                     return teacher.associateSubject(subject);
                 });
