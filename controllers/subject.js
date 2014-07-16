@@ -2,6 +2,7 @@
 
 var models = require('../models'),
     User = models.User,
+    Test = models.Test,
     Classroom = models.Classroom,
     Subject = models.Subject;
 
@@ -74,6 +75,68 @@ module.exports = function (router) {
             }).then(function (classrooms) {
                 data.classrooms = classrooms;
                 res.render('subject/form', data);
+            });
+        });
+    });
+
+    /**
+     * View to create a test
+     */
+    router.get('/:subject_id/test/new', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher()) {
+                return res.redirect('back');
+            }
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
+            Subject.find({ where: { id: req.params.subject_id }, include: [Classroom] }).then(function (subject_with_classroom) {
+                data.subject = subject_with_classroom;
+                res.render('test/form', data);
+            });
+        });
+    });
+
+    /**
+     * Index view of a test
+     */
+    router.get('/:subject_id/test/:test_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher()) {
+                return res.redirect('back');
+            }
+            var data = {};
+            Subject.find({ where: { id: req.params.subject_id }, include: [Classroom] }).then(function (subject_with_classroom) {
+                data.subject = subject_with_classroom;
+                return Test.find(req.params.test_id);
+            }).then(function (test) {
+                data.test = test;
+                res.render('test/item', data);
+            });
+        });
+    });
+
+    /**
+     * View to update a test
+     */
+    router.get('/:subject_id/test/:test_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher()) {
+                return res.redirect('back');
+            }
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
+            Subject.find({ where: { id: req.params.subject_id }, include: [Classroom] }).then(function (subject_with_classroom) {
+                data.subject = subject_with_classroom;
+                return Test.find(req.params.test_id);
+            }).then(function (test) {
+                data.test = test;
+                res.render('test/form', data);
             });
         });
     });

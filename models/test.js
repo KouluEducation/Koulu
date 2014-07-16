@@ -26,9 +26,39 @@ module.exports = function (sequelize, DataTypes) {
              */
             getDateFormatted: function () {
                 return moment(this.date).format('DD-MM-YYYY');
+            },
+            /**
+             * Gets the tests date in database format
+             * @returns {string}
+             */
+            getDateValue: function () {
+                return moment(this.date).format('YYYY-MM-DD');
+            },
+            /**
+             * Associates a test to a subject
+             * @param subject
+             * @returns {Promise}
+             */
+            associateSubject: function (subject) {
+                return this.setSubject(subject);
             }
         }
     });
+
+    /* Static methods */
+
+    /**
+     * Creates a test
+     * @param data
+     * @returns {Promise}
+     */
+    Test.createOne = function (data) {
+        return Test.findOrCreate({
+            description: data.description,
+            date: data.date,
+            subject_id: data.subject_id
+        });
+    };
 
     return Test;
 };

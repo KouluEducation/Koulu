@@ -3,7 +3,8 @@
 var UserSeed = require('./user'),
     SpecialtySeed = require('./specialty'),
     ClassroomSeed = require('./classroom'),
-    SubjectSeed = require('./subject');
+    SubjectSeed = require('./subject'),
+    TestSeed = require('./test');
 
 module.exports = {
 
@@ -34,6 +35,10 @@ module.exports = {
             return subject.associateClassroom(seededClassroom);
         }).then(function (classroom) {
             return seededUsers.teacher.associateSubject(seededSubject);
+        }).then(function (subject) {
+            return TestSeed.seed();
+        }).then(function (test) {
+            return test.associateSubject(seededSubject);
         });
 
     }

@@ -1,0 +1,17 @@
+extends ../layouts/master
+block title
+  | #{test.description} de #{subject.name} (#{subject.classroom.name}) en Koulu
+block body
+  include ../components/header
+  .container.content
+    h2
+      strong #{test.description}&nbsp;
+      | #{test.getDateFormatted()}
+      a.btn.btn-default.btn-xs.pull-right(href="/subject/#{subject.id}/test/#{test.id}/edit") Editar evaluación
+    h3
+      strong #{subject.name}&nbsp;
+      | #{subject.classroom.name}
+
+block scripts
+  script(src="/js/header.js")
+block styles
