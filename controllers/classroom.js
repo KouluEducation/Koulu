@@ -171,4 +171,20 @@ module.exports = function (router) {
         });
     });
 
+    /**
+     * Post to set attendance
+     */
+    router.post('/:classroom_id/attendance', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+
+            //var data = req.body;
+
+            //TODO: Create the model for the attendance
+
+            });
+   });
+
 };
