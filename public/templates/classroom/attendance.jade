@@ -16,11 +16,7 @@ block body
           ul.list-group
             each student, index in students
               li.list-group-item= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
-                - var link = "/classroom/" + classroom.id
-                - link += subject ? ("/subject/" + subject.id) : ""
-                - link += "/student/" + student.student_id
-                a.btn.btn-xs(href="#{link}")
-                select.pull-right(name="attendance-#{student.student_id}")
+                select.form-control.pull-right(name="attendance-#{student.student_id}", style="width:100px;height:25px")
                   option(value="present")
                     | Presente
                   option(value="absent")
