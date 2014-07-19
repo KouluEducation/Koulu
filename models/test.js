@@ -12,8 +12,8 @@ module.exports = function (sequelize, DataTypes) {
             },
             set: function (value) {
                 // Temporary fix
-                if (typeof value === "string") {
-                    value += " 12:00:00";
+                if (typeof value === 'string') {
+                    value += ' 12:00:00';
                 } else {
                     value.setHours(12);
                     value.setMinutes(0);
