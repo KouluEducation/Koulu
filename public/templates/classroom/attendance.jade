@@ -13,16 +13,19 @@ block body
       .col-lg-12.col-md-12.col-sm-12.col-xs-12
         .panel-heading Alumnos (#{students.length})
         .panel-body
-          ul.list-group
-            each student, index in students
-              li.list-group-item= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
-                select.form-control.pull-right(name="attendance-#{student.student_id}", style="width:100px;height:25px")
-                  option(value="present")
-                    | Presente
-                  option(value="absent")
-                    | Ausente
-                  option(value="late")
-                    | Tarde
+          form(name="attendance-form", action="/classroom/#{classroom.id}/attendance/send", method="post")
+            ul.list-group
+              each student, index in students
+                li.list-group-item= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
+                  select.form-control.pull-right(name="attendance-#{student.student_id}", style="width:100px;height:25px")
+                    option(value="present")
+                      | Presente
+                    option(value="absent")
+                      | Ausente
+                    option(value="late")
+                      | Tarde
+            input(type="submit", value="Aceptar")
+
 block scripts
   script(src="/js/header.js")
 block styles
