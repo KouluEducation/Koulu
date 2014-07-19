@@ -150,4 +150,25 @@ module.exports = function (router) {
         });
     });
 
+
+    /**
+     * View to take attendance
+     */
+    router.get('/:classroom_id/attendance', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+
+            var data = {};
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                data.classroom = classroom;
+                return classroom.getAllStudents();
+            }).then(function (students) {
+                data.students = students;
+                res.render('classroom/attendance', data);
+            });
+        });
+    });
+
 };
