@@ -1,0 +1,19 @@
+#kl-classroom-tabs.panel.panel-default
+  .panel-body
+//
+    ul.nav.nav-tabs
+      li.active
+        a(href="#test",data-toggle="tab") Evaluaciones (#{tests.length})
+      li
+        a(href="#file",data-toggle="tab") Material de estudio
+    .tab-content(style="margin-top:5px")
+      #test.tab-pane.active
+        ul.list-group
+          each test in tests
+            li.list-group-item= test.getDateFormatted() + '. '
+              strong= test.description
+              a.btn.btn-xs(href="/subject/#{subject.id}/test/#{test.id}")
+                span.glyphicon.glyphicon-arrow-right
+        a.btn.btn-xs.btn-success(href="/subject/#{subject.id}/test/new") Agregar evaluación
+      #file.tab-pane
+        | Material de estudio

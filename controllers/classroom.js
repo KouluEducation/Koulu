@@ -121,13 +121,18 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
                 return res.redirect('back');
             }
+            var data = {};
             Classroom.find(req.params.classroom_id).then(function (classroom) {
-                res.send('classroom: ' + classroom.name);
+                data.classrom = classroom;
+                return classroom.getAllStudents();
+            }).then(function (students) {
+                data.students = students;
+                res.render('classroom/item',data);
             });
         });
     });
 
-    /**
+    /** 
      * Create a classroom
      */
     router.post('/', User.isAuthenticated(), User.inject(), function (req, res) {
