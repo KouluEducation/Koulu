@@ -5,7 +5,23 @@ var moment = require('moment');
 module.exports = function (sequelize, DataTypes) {
     var Test = sequelize.define('Test', {
         description: DataTypes.STRING,
-        date: DataTypes.DATE,
+        date: {
+            type: DataTypes.DATE,
+            validate: {
+                isDate: true
+            },
+            set: function (value) {
+                // Temporary fix
+                if (typeof value === "string") {
+                    value += " 12:00:00";
+                } else {
+                    value.setHours(12);
+                    value.setMinutes(0);
+                    value.setSeconds(0);
+                }
+                return this.setDataValue('date', value);
+            }
+        },
         subject_id: {
             type: DataTypes.INTEGER,
             references: 'Subjects',
