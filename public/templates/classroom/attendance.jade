@@ -8,12 +8,10 @@ block body
       .col-lg-6.col-md-6.col-sm-6.col-xs-6
         h2
           strong #{classroom.name}
-      .col-lg-6.col-md-6.col-sm-6.col-xs-6.text-right
-      .row
       .col-lg-12.col-md-12.col-sm-12.col-xs-12
         .panel-heading Alumnos (#{students.length})
         .panel-body
-          form(name="attendance-form", action="/classroom/#{classroom.id}/attendance/send", method="post")
+          form(name="attendance-form", action="/classroom/#{classroom.id}/attendance", method="post")
             ul.list-group
               each student, index in students
                 li.list-group-item= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
@@ -24,7 +22,8 @@ block body
                       | Ausente
                     option(value="late")
                       | Tarde
-            input(type="submit", value="Aceptar")
+            hr
+            input.btn.btn-lg.btn-success.btn-block(type="submit", value="Aceptar")
 
 block scripts
   script(src="/js/header.js")
