@@ -9,7 +9,8 @@ var fs = require('fs'),
             underscored: true,
             charset: 'utf8',
             collate: 'utf8_general_ci'
-        }
+        },
+        logging: false
     }),
     _ = require('lodash'),
     db = {};

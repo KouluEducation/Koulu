@@ -123,16 +123,16 @@ module.exports = function (router) {
             }
             var data = {};
             Classroom.find(req.params.classroom_id).then(function (classroom) {
-                data.classrom = classroom;
+                data.classroom = classroom;
                 return classroom.getAllStudents();
             }).then(function (students) {
                 data.students = students;
-                res.render('classroom/item',data);
+                res.render('classroom/item', data);
             });
         });
     });
 
-    /** 
+    /**
      * Create a classroom
      */
     router.post('/', User.isAuthenticated(), User.inject(), function (req, res) {

@@ -2,17 +2,14 @@ extends ../layouts/master
 block title
   | (#{classroom.name}) en Koulu
 block body
-//
   include ../components/header
   .container.content
     h2
       strong #{classroom.name}
       a.btn.btn-default.btn-xs.pull-right(href="/classroom/#{classroom.id}/edit") Editar Curso
     .row
-      .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .col-lg-12.col-md-12.col-sm-12.col-xs-12
         include ../components/students
-      .pull-right.col-lg-6.col-md-6.col-sm-12.col-xs-12
-        include tabs
 
 block scripts
   script(src="/js/header.js")
