@@ -141,6 +141,13 @@ module.exports = function (router) {
                 return res.redirect('/');
             }
             Classroom.createOne(req.body).then(function (classroom) {
+                if (user.isPreceptor()) {
+                    return user.getPreceptor().then(function (preceptor) {
+                        return preceptor.addClassroom(classroom);
+                    });
+                }
+                return classroom;
+            }).then(function (classroom) {
                 req.flash('success', classroom.name + ' se ha creado correctamente!');
                 res.redirect('back');
             }).error(function () {
