@@ -4,9 +4,13 @@ block title
 block body
   include ../components/header
   .container.content
-    h2
-      strong #{classroom.name}
-      a.btn.btn-default.btn-xs.pull-right(href="/classroom/#{classroom.id}/edit") Editar Curso
+    .row
+      .col-lg-6.col-md-6.col-sm-6.col-xs-6
+        h2
+          strong #{classroom.name}
+      .col-lg-6.col-md-6.col-sm-6.col-xs-6.text-right
+        a.btn.btn-default.btn-xs(href="/classroom/#{classroom.id}/attendence", style="margin:30px 5px 0 0") Tomar Asistencia
+        a.btn.btn-default.btn-xs(href="/classroom/#{classroom.id}/edit", style="margin:30px 0 0 0") Editar Curso
     .row
       .col-lg-12.col-md-12.col-sm-12.col-xs-12
         include ../components/students
