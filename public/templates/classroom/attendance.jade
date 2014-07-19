@@ -14,8 +14,8 @@ block body
           form(name="attendance-form", action="/classroom/#{classroom.id}/attendance", method="post")
             ul.list-group
               each student, index in students
-                li.list-group-item= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
-                  select.form-control.pull-right(name="attendance-#{student.student_id}", style="width:100px;height:25px")
+                li.list-group-item(style="height:50px")= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
+                  select.form-control.input-sm.pull-right(name="attendance-#{student.student_id}", style="width:100px")
                     option(value="present")
                       | Presente
                     option(value="absent")
