@@ -188,9 +188,13 @@ module.exports = function (router) {
             }
 
             //var data = req.body;
+            console.log(req.body);
 
-            //TODO: Create the model for the attendance
-
+            for (var key in req.body) {
+                if (req.body.hasOwnProperty(key)) {
+                    console.log(key + " -> " + req.body[key]);
+                }
+            }
         });
     });
 

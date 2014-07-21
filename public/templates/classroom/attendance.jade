@@ -23,6 +23,7 @@ block body
                     option(value="late")
                       | Tarde
             hr
+            input(type="hidden",name="_csrf",value="#{_csrf}")
             input.btn.btn-lg.btn-success.btn-block(type="submit", value="Aceptar")
 
 block scripts
