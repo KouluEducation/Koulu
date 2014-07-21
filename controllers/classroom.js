@@ -191,7 +191,7 @@ module.exports = function (router) {
 
             //TODO: Create the model for the attendance
 
-            });
-   });
+        });
+    });
 
 };
