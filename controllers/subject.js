@@ -171,7 +171,9 @@ module.exports = function (router) {
                 }
             }
 
-            Qualification.bulkCreate(qualifications).success(function () {
+            Qualification.destroy({ test_id: test_id }).then(function () {
+                return Qualification.bulkCreate(qualifications);
+            }).then(function () {
                 req.flash('success', 'Se ha cargado la asistencia correctamente!');
                 res.redirect('back');
             }).error(function () {

@@ -93,6 +93,34 @@ module.exports = function (router) {
                 return Subject.find(req.params.subject_id);
             }).then(function (subject) {
                 data.subject = subject;
+                var start = new Date();
+                start.setMonth(2);
+                start.setDate(1);
+                var end = new Date();
+                end.setMonth(4);
+                end.setDate(31);
+                return data.student.getAverageQualification(start,end,data.subject.id);
+            }).then(function (first) {
+                data.first = first;
+                var start = new Date();
+                start.setMonth(5);
+                start.setDate(1);
+                var end = new Date();
+                end.setMonth(7);
+                end.setDate(31);
+                return data.student.getAverageQualification(start,end,data.subject.id);
+
+            }).then(function (second) {
+                data.second = second;
+                var start = new Date();
+                start.setMonth(8);
+                start.setDate(1);
+                var end = new Date();
+                end.setMonth(10);
+                end.setDate(30);
+                return data.student.getAverageQualification(start,end,data.subject.id);
+            }).then(function (third) {
+                data.third = third;
                 res.render('student/item_by_subject', data);
             });
         });
