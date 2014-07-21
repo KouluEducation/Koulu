@@ -113,8 +113,11 @@ module.exports = function (router) {
                 return Test.find(req.params.test_id);
             }).then(function (test) {
                 data.test = test;
+                return data.subject.classroom.getAllStudents();
+            }).then(function (students) {
+                data.students = students;
                 res.render('test/item', data);
-            });
+            })
         });
     });
 
