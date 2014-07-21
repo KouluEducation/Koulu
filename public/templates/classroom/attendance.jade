@@ -5,9 +5,15 @@ block body
   include ../components/header
   .container.content
     .row
-      .col-lg-6.col-md-6.col-sm-6.col-xs-6
+      .col-lg-12.col-md-12.col-sm-12.col-xs-12
         h2
           strong #{classroom.name}
+        if error.length !== 0
+          .alert.alert-danger
+            = error
+        if success.length !== 0
+          .alert.alert-success
+            = success
       .col-lg-12.col-md-12.col-sm-12.col-xs-12
         .panel-heading Alumnos (#{students.length})
         .panel-body

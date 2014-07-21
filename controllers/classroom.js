@@ -168,7 +168,11 @@ module.exports = function (router) {
                 return res.redirect('back');
             }
 
-            var data = {};
+            var data = {
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
+
             Classroom.find(req.params.classroom_id).then(function (classroom) {
                 data.classroom = classroom;
                 return classroom.getAllStudents();
@@ -198,7 +202,11 @@ module.exports = function (router) {
 
             console.log(attendances);
             Attendance.bulkCreate(attendances).success(function () {
-                res.redirect('/');
+                req.flash('success', 'Se ha cargado la asistencia correctamente!');
+                res.redirect('back');
+            }).error(function () {
+                req.flash('error', 'Error al cargar asistencia');
+                res.redirect('back');
             });
         });
     });
