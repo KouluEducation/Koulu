@@ -2,6 +2,11 @@
 
 module.exports = function (sequelize, DataTypes) {
     var Qualification = sequelize.define('Qualification', {
+        student_id: {
+            type: DataTypes.INTEGER,
+            references: 'Students',
+            referencesKey: 'id'
+        },
         mark: {
             type: DataTypes.INTEGER,
             allowNull: true,
@@ -19,7 +24,9 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function (models) {
-                Qualification.belongsTo(models.Test);
+                Qualification
+                   .belongsTo(models.Test)
+                   .belongsTo(models.Student);
             }
         },
         instanceMethods: {

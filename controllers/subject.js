@@ -4,6 +4,7 @@ var models = require('../models'),
     User = models.User,
     Test = models.Test,
     Classroom = models.Classroom,
+    Qualification = models.Qualification,
     Subject = models.Subject;
 
 module.exports = function (router) {
@@ -107,7 +108,11 @@ module.exports = function (router) {
             if (!user.isTeacher()) {
                 return res.redirect('back');
             }
-            var data = {};
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
             Subject.find({ where: { id: req.params.subject_id }, include: [Classroom] }).then(function (subject_with_classroom) {
                 data.subject = subject_with_classroom;
                 return Test.find(req.params.test_id);
@@ -141,6 +146,39 @@ module.exports = function (router) {
                 data.test = test;
                 res.render('test/form', data);
             });
+        });
+    });
+
+
+    /**
+     * Post method to get Qualifications
+     */
+    router.post('/:subject_id/test/:test_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher()) {
+                return res.redirect('back');
+            }
+
+            delete req.body._csrf;
+            var test_id = req.body.test;
+            delete req.body.test;
+
+            var qualifications = [];
+            for (var key in req.body) {
+                if (req.body.hasOwnProperty(key)) {
+                    var id = key.split('-');
+                    qualifications.push({student_id: id[1], mark: req.body[key], test_id: test_id});
+                }
+            }
+
+            Qualification.bulkCreate(qualifications).success(function () {
+                req.flash('success', 'Se ha cargado la asistencia correctamente!');
+                res.redirect('back');
+            }).error(function () {
+                req.flash('error', 'Error al cargar asistencia');
+                res.redirect('back');
+            });
+
         });
     });
 

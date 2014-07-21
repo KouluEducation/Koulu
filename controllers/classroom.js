@@ -200,7 +200,6 @@ module.exports = function (router) {
                 }
             }
 
-            console.log(attendances);
             Attendance.bulkCreate(attendances).success(function () {
                 req.flash('success', 'Se ha cargado la asistencia correctamente!');
                 res.redirect('back');

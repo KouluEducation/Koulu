@@ -29,7 +29,7 @@ module.exports = function (sequelize, DataTypes) {
         classMethods: {
             associate: function (models) {
                 Attendance
-                    .hasOne(models.Student)
+                    .belongsTo(models.Student)
             }
         },
         instanceMethods: {

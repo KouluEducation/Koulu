@@ -6,6 +6,12 @@ block body
   .container.content
     h2
       strong #{test.description}&nbsp;
+    if error.length !== 0
+      .alert.alert-danger
+        = error
+    if success.length !== 0
+      .alert.alert-success
+        = success
       | #{test.getDateFormatted()}
       a.btn.btn-default.btn-xs.pull-right(href="/subject/#{subject.id}/test/#{test.id}/edit") Editar evaluación
     h3
@@ -14,11 +20,11 @@ block body
     .col-lg-12.col-md-12.col-sm-12.col-xs-12
       .panel-heading Alumnos (#{students.length})
       .panel-body
-        form(name="attendance-form", action="/subject/#{subject.id}/test/#{test.id}", method="post")
+        form(name="attendance-form", action="/subject/#{subject.id}/test/#{test.id}/edit", method="post")
           ul.list-group
             each student, index in students
               li.list-group-item(style="height:50px")= (index + 1) + '. ' + student.last_name + ', ' + student.first_name
-                select.form-control.input-sm.pull-right(name="attendance-#{student.student_id}", style="width:100px")
+                select.form-control.input-sm.pull-right(name="qualification-#{student.student_id}", style="width:100px")
                   option(value="1")
                     | 1
                   option(value="2")
@@ -43,6 +49,7 @@ block body
                     | Ausente
           hr
           input(type="hidden",name="_csrf",value="#{_csrf}")
+          input(type="hidden",name="test",value="#{test.id}")
           input.btn.btn-lg.btn-success.btn-block(type="submit", value="Aceptar")
 
 

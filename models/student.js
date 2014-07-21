@@ -17,7 +17,10 @@ module.exports = function (sequelize, DataTypes) {
             associate: function (models) {
                 Student
                     .hasMany(models.Parent, { through: models.StudentParents })
-                    .belongsTo(models.Classroom);
+                    .belongsTo(models.Classroom)
+                    .hasMany(models.Attendance)
+                    .hasMany(models.Qualification);
+
             }
         },
         instanceMethods: {
