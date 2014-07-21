@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
             references: 'Students',
             referencesKey: 'id'
         },
-        status: DataTypes.ENUM('presente', 'ausente','tarde')
+        status: DataTypes.ENUM('present', 'absent','late')
     }, {
         classMethods: {
             associate: function (models) {

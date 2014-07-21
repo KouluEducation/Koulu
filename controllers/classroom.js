@@ -5,6 +5,7 @@ var models = require('../models'),
     Specialty = models.Specialty,
     Subject = models.Subject,
     Student = models.Student,
+    Attendance = models.Attendance,
     User = models.User;
 
 module.exports = function (router) {
@@ -186,15 +187,19 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
-
-            //var data = req.body;
-            console.log(req.body);
-
+            delete req.body._csrf;
+            var attendances = [];
             for (var key in req.body) {
                 if (req.body.hasOwnProperty(key)) {
-                    console.log(key + " -> " + req.body[key]);
+                    var id = key.split('-');
+                    attendances.push({student_id: id[1], status: req.body[key]})
                 }
             }
+
+            console.log(attendances);
+            Attendance.bulkCreate(attendances).success(function () {
+                res.redirect('/');
+            });
         });
     });
 
