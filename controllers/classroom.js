@@ -172,7 +172,11 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
                 return res.redirect('back');
             }
-            var data = {};
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
             Classroom.find(req.params.classroom_id).then(function (classroom) {
                 data.classroom = classroom;
                 return classroom.getAllStudents();
