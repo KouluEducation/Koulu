@@ -1,0 +1,44 @@
+extends layouts/master
+block title
+  | Bienvenido a Koulu!
+block body
+  include components/header
+  .container.content
+    h2 Hola #{user.first_name} #{user.last_name}!
+    p Esta es tu situación escolar:
+    .row
+      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+        .panel.panel-default
+          .panel-heading
+            h4 Promedio 1er trimestre
+          .panel-body
+            h3
+              strong #{first}
+      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+        .panel.panel-default
+          .panel-heading
+            h4 Promedio 2do trimestre
+          .panel-body
+            h3
+              strong #{second}
+      .col-lg-4.col-md-4.col-sm-4.col-xs-12
+        .panel.panel-default
+          .panel-heading
+            h4 Promedio 3er trimestre
+          .panel-body
+            h3
+              strong #{third}
+    .row
+      .col-lg-12.col-md-12.col-sm-12.col-xs-12
+        #kl-classrooms.panel.panel-default
+          .panel-heading Tus materias
+          .panel-body
+            ul.list-group
+              each subject in classroom.subjects
+                li.list-group-item= subject.name
+                  a.btn.btn-xs(href="classroom/#{classroom.id}/subject/#{subject.id}/student/#{student.id}")
+                    span.glyphicon.glyphicon-arrow-right
+
+block scripts
+  script(src="/js/header.js")
+block styles

@@ -34,7 +34,7 @@ module.exports = function (router) {
      */
     router.get('/:subject_id', User.isAuthenticated(), User.inject(), function (req, res) {
         User.getCurrent(req).then(function (user) {
-            if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
             var data = {};
@@ -151,7 +151,7 @@ module.exports = function (router) {
 
 
     /**
-     * Post method to get Qualifications
+     * Save test qualifications
      */
     router.post('/:subject_id/test/:test_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
         User.getCurrent(req).then(function (user) {
@@ -159,8 +159,8 @@ module.exports = function (router) {
                 return res.redirect('back');
             }
 
-            delete req.body._csrf;
             var test_id = req.body.test;
+            delete req.body._csrf;
             delete req.body.test;
 
             var qualifications = [];
@@ -170,17 +170,15 @@ module.exports = function (router) {
                     qualifications.push({student_id: id[1], mark: req.body[key], test_id: test_id});
                 }
             }
-
             Qualification.destroy({ test_id: test_id }).then(function () {
                 return Qualification.bulkCreate(qualifications);
             }).then(function () {
-                req.flash('success', 'Se ha cargado la asistencia correctamente!');
+                req.flash('success', 'Se han guardado las calificaciones correctamente!');
                 res.redirect('back');
             }).error(function () {
-                req.flash('error', 'Error al cargar asistencia');
+                req.flash('error', 'Error al guardar las calificaciones');
                 res.redirect('back');
             });
-
         });
     });
 

@@ -33,22 +33,35 @@ module.exports = function (sequelize, DataTypes) {
                 return this.setClassroom(classroom);
             },
             /**
-             * Calculates Average Qualification
-             * @param subject
-             * @param start
-             * @param end
+             * Retrieves all the qualifications for a student
+             * @param {number} [subject=]
+             * @returns {Promise}
+             */
+            getTestsQualifications: function (subject) {
+                var Test = require('../models').Test;
+                var params = { include: [ Test ], order: 'date ASC' };
+                if (subject) {
+                    params.where = { subject_id: subject };
+                }
+                return this.getQualifications(params);
+            },
+            /**
+             * Calculates average qualifications for a student
+             * @param {Date} start
+             * @param {Date} end
+             * @param {number} [subject=]
              * @returns {Promise}
              */
             getAverageQualification: function (start, end, subject) {
-                var query = 'select AVG(mark) as avg from Qualifications q ' +
-                    'INNER JOIN Tests t ON t.id = q.test_id ' +
-                    'where student_id = ? and t.date BETWEEN ? AND ?';
+                var query = 'select avg(mark) as avg from Qualifications q ' +
+                    'inner join Tests t ON t.id = q.test_id ' +
+                    'where student_id = ? and t.date between ? and ?';
                 var params = [ this.id, start, end ];
                 if (subject) {
-                    query += ' AND subject_id = ?';
+                    query += ' and subject_id = ?';
                     params.push(subject);
                 }
-                query += ' GROUP BY q.student_id';
+                query += ' group by q.student_id';
                 return sequelize.query(query, null, { raw: true }, params).then(function (res) {
                     return res.length === 0 ? "N/A" : res[0].avg;
                 });

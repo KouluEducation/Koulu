@@ -84,10 +84,11 @@ module.exports = function (router) {
      */
     router.get('/:classroom_id/subject/:subject_id/student/:student_id', User.isAuthenticated(), User.inject(), function (req, res) {
         User.getCurrent(req).then(function (user) {
-            if (!user.isTeacher() && !user.isPreceptor()) {
+            if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
                 return res.redirect('back');
             }
             var data = {};
+            data.user = user;
             Student.find({ where: { id: req.params.student_id }, include: [User, Classroom] }).then(function (student) {
                 data.student = student;
                 return Subject.find(req.params.subject_id);
@@ -99,7 +100,7 @@ module.exports = function (router) {
                 var end = new Date();
                 end.setMonth(4);
                 end.setDate(31);
-                return data.student.getAverageQualification(start,end,data.subject.id);
+                return data.student.getAverageQualification(start, end, data.subject.id);
             }).then(function (first) {
                 data.first = first;
                 var start = new Date();
@@ -108,8 +109,7 @@ module.exports = function (router) {
                 var end = new Date();
                 end.setMonth(7);
                 end.setDate(31);
-                return data.student.getAverageQualification(start,end,data.subject.id);
-
+                return data.student.getAverageQualification(start, end, data.subject.id);
             }).then(function (second) {
                 data.second = second;
                 var start = new Date();
@@ -118,9 +118,13 @@ module.exports = function (router) {
                 var end = new Date();
                 end.setMonth(10);
                 end.setDate(30);
-                return data.student.getAverageQualification(start,end,data.subject.id);
+                return data.student.getAverageQualification(start, end, data.subject.id);
             }).then(function (third) {
                 data.third = third;
+                return data.student.getTestsQualifications(data.subject.id);
+            }).then(function (qualifications) {
+                console.log(JSON.stringify(qualifications));
+                data.qualifications = qualifications;
                 res.render('student/item_by_subject', data);
             });
         });
@@ -186,7 +190,6 @@ module.exports = function (router) {
         });
     });
 
-
     /**
      * View to take attendance
      */
@@ -227,7 +230,6 @@ module.exports = function (router) {
                     attendances.push({student_id: id[1], status: req.body[key]})
                 }
             }
-
             Attendance.bulkCreate(attendances).success(function () {
                 req.flash('success', 'Se ha cargado la asistencia correctamente!');
                 res.redirect('back');
