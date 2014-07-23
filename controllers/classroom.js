@@ -262,4 +262,25 @@ module.exports = function (router) {
         });
     });
 
+    /**
+     * Delete a classroom
+     */
+    router.post('/:classroom_id/delete', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            Classrrom.find(req.params.classroom_id).then(function (classroom) {
+                return classroom.destroy;
+            }).then(function (classroom) {
+                req.flash('deleted', true);
+                req.flash('success', classroom.name + ' se ha eliminado correctamente!');
+                return res.direct('back');
+            }).error(function () {
+                req.flash('error', 'Error al eliminar curso');
+                res.redirect('back');
+            });
+        });
+    });
+
 };
