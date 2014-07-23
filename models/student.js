@@ -45,15 +45,11 @@ module.exports = function (sequelize, DataTypes) {
                     'and a.date between ? and ? ' +
                     'group by a.status';
                 return sequelize.query(query, null, { raw: true }, [ this.id, start, end ]).then(function (res) {
-                    var absences = 0;
-                    for (var i = 0; i < res.length; i++) {
-                        if (res[i].status === 'absent') {
-                            absences += res[i].count;
-                        } else if (res[i].status === 'late') {
-                            absences += (res[i].count * 0.5);
-                        }
-                    }
-                    return absences;
+                    return res.map(function (val) {
+                        return val.status === 'absent' ? val.count : (val.status === 'late' ? (val.count * 0.5) : 0);
+                    }).reduce(function (a, b) {
+                        return a + b;
+                    }, 0);
                 });
             },
             /**
