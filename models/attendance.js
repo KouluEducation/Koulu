@@ -1,5 +1,7 @@
 'use strict';
 
+var moment = require('moment');
+
 module.exports = function (sequelize, DataTypes) {
     var Attendance = sequelize.define('Attendance', {
         date: {
@@ -33,6 +35,13 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         instanceMethods: {
+            /**
+             * Gets the tests date in latin format
+             * @returns {string}
+             */
+            getDateFormatted: function () {
+                return moment(this.date).format('DD-MM-YYYY');
+            }
         }
     });
 

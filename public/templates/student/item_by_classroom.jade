@@ -15,14 +15,14 @@ block body
           h4 Inasistencias
         .panel-body
           h3
-            strong 14
+            strong #{total_absences}
     .col-lg-4.col-md-4.col-sm-4.col-xs-12
       .panel.panel-default
         .panel-heading
           h4 Promedio anual
         .panel-body
           h3
-            strong 7,66
+            strong #{average}
     .col-lg-4.col-md-4.col-sm-4.col-xs-12
       .panel.panel-default
         .panel-heading
@@ -42,11 +42,31 @@ block body
               a(href="#banns",data-toggle="tab") Amonestaciones
           .tab-content(style="margin-top:5px")
             #absences.tab-pane.active
-              | Inasistencias
+              if absences.length === 0
+                br
+                | El alumno no posee inasistencias
+              else
+                ul.list-group
+                  each absence, index in absences
+                      li.list-group-item
+                        | #{index + 1}.&nbsp;
+                        | #{absence.getDateFormatted()}&nbsp;
+                        strong #{absence.status === 'absent' ? 'Ausente' : 'Tarde'}
             #qualification.tab-pane
-              | Calificaciones
+              if qualifications.length === 0
+                br
+                | El alumno no posee calificaciones
+              else
+                ul.list-group
+                  each qualification, index in qualifications
+                    li.list-group-item
+                      | #{index + 1}.&nbsp;
+                      | #{qualification.test.getDateFormatted()}&nbsp;
+                      strong #{qualification.test.description}:&nbsp;
+                      strong(style="font-size:18px") #{qualification.mark}
             #banns.tab-pane
-              | Amonestaciones
+              br
+              | El alumno no posee amonestaciones
 
 block scripts
   script(src="/js/header.js")

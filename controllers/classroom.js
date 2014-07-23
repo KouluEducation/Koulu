@@ -131,17 +131,35 @@ module.exports = function (router) {
     });
 
     /**
-     * Index view of a student (general view)
+     * Index view of a student (classroom view)
      */
     router.get('/:classroom_id/student/:student_id', User.isAuthenticated(), User.inject(), function (req, res) {
         User.getCurrent(req).then(function (user) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
-            Student.find({ where: { id: req.params.student_id }, include: [User, Classroom] }).then(function (student) {
-                res.render('student/item_by_classroom', {
-                    student: student
-                });
+            var data = {};
+            var start = new Date();
+            start.setMonth(0);
+            start.setDate(1);
+            var end = new Date();
+            end.setMonth(11);
+            end.setDate(31);
+            Student.find({ where: { id: req.params.student_id }, include: [ User, Classroom ] }).then(function (student) {
+                data.student = student;
+                return data.student.getAverageQualification(start, end);
+            }).then(function (average) {
+                data.average = average;
+                return data.student.getTotalAbsences(start, end);
+            }).then(function (total_absences) {
+                data.total_absences = total_absences;
+                return data.student.getAbsences(start, end);
+            }).then(function (absences) {
+                data.absences = absences;
+                return data.student.getTestsQualifications();
+            }).then(function (qualifications) {
+                data.qualifications = qualifications;
+                res.render('student/item_by_classroom', data);
             });
         });
     });
@@ -227,7 +245,7 @@ module.exports = function (router) {
             for (var key in req.body) {
                 if (req.body.hasOwnProperty(key)) {
                     var id = key.split('-');
-                    attendances.push({student_id: id[1], status: req.body[key]})
+                    attendances.push({student_id: id[1], date: new Date(), status: req.body[key]});
                 }
             }
             Attendance.bulkCreate(attendances).success(function () {

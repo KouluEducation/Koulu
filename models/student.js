@@ -33,6 +33,50 @@ module.exports = function (sequelize, DataTypes) {
                 return this.setClassroom(classroom);
             },
             /**
+             * Retrieves the total amount of absences
+             * @param {Date} start
+             * @param {Date} end
+             * @returns {Promise}
+             */
+            getTotalAbsences: function (start, end) {
+                var query = 'select a.status, count(a.status) as count ' +
+                    'from Attendances a ' +
+                    'where a.student_id = ? ' +
+                    'and a.date between ? and ? ' +
+                    'group by a.status';
+                return sequelize.query(query, null, { raw: true }, [ this.id, start, end ]).then(function (res) {
+                    var absences = 0;
+                    for (var i = 0; i < res.length; i++) {
+                        if (res[i].status === 'absent') {
+                            absences += res[i].count;
+                        } else if (res[i].status === 'late') {
+                            absences += (res[i].count * 0.5);
+                        }
+                    }
+                    return absences;
+                });
+            },
+            /**
+             * Retrieves all absences and lates
+             * @param {Date} start
+             * @param {Date} end
+             * @returns {Promise}
+             */
+            getAbsences: function (start, end) {
+                return this.getAttendances({
+                    where: {
+                        date: {
+                            between: [ start, end ]
+                        }
+                    },
+                    order: 'date ASC'
+                }).then(function (res) {
+                    return res.filter(function (val) {
+                        return val.status !== 'present';
+                    });
+                });
+            },
+            /**
              * Retrieves all the qualifications for a student
              * @param {number} [subject=]
              * @returns {Promise}
