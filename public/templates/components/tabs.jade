@@ -13,9 +13,18 @@
     .tab-content(style="margin-top:5px")
       #message.tab-pane.active
         textarea.form-control(rows="3",placeholder="Mensaje...")
+        select.form-control.input-sm.pull-left(name="fake-select", style="width:100px")
+          option(value="present")
+            | Curso
+        input.btn.btn-sm.btn-success.pull-left(type="submit", value="Enviar")
       #test.tab-pane
         | Evaluación
       #file.tab-pane
-        | Material de estudio
+         textarea.pull-left(rows="1",placeholder="Descripción",style="width:300px")
+         input.btn.btn-sm.btn-success.pull-left(type="submit", value="Subir")
       #notification.tab-pane
-        | Enviar notificación
+        textarea.form-control(rows="3",placeholder="Mensaje...")
+        select.form-control.input-sm.pull-left(name="fake-select", style="width:100px")
+          option(value="present")
+            | Alumno
+        input.btn.btn-sm.btn-success.pull-left(type="submit", value="Enviar")
