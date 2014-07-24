@@ -4,18 +4,35 @@ block title
 block body
   include ../components/header
   .container.content
-    .row
-      .col-lg-6.col-md-6.col-sm-6.col-xs-6
-        h2
-          strong #{classroom.name}
-      .col-lg-6.col-md-6.col-sm-6.col-xs-6.text-right
-        a.btn.btn-default.btn-xs(href="/classroom/#{classroom.id}/attendance", style="margin:30px 5px 0 0") Tomar Asistencia
-        a.btn.btn-default.btn-xs(href="/classroom/#{classroom.id}/edit", style="margin:30px 0 0 0") Editar Curso
-    .row
-      .col-lg-12.col-md-12.col-sm-12.col-xs-12
-        include ../components/students
-
-
+    if deleted.length != 0
+      h2 Curso eliminado
+    else
+      .row
+        .col-lg-6.col-md-6.col-sm-6.col-xs-6
+          h2
+            strong #{classroom.name}
+        .col-lg-6.col-md-6.col-sm-6.col-xs-6.text-right
+          a.btn.btn-default.btn-xs(href="/classroom/#{classroom.id}/attendance", style="margin:30px 5px 0 0") Tomar Asistencia
+          a.btn.btn-default.btn-xs(href="/classroom/#{classroom.id}/edit", style="margin:30px 0 0 0") Editar Curso
+      .row
+        .col-lg-12.col-md-12.col-sm-12.col-xs-12
+          include ../components/students
+      if classroom && deleted.length === 0
+        button.btn.btn-link.btn-block(type="button",style="color:#d9534f",data-toggle="modal",data-target="#kl-confirm-modal") Eliminar curso
+    if classroom && deleted.length === 0
+      #kl-confirm-modal.modal(tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
+       .modal-dialog
+        .modal-content
+          .modal-header
+            h4#myModalLabel.modal-title ¡Atención!
+          .modal-body
+            | ¿Está seguro de borrar este curso?
+            br
+            | Si lo borra no habrá vuelta atrás...
+          .modal-footer
+              button.btn.btn-link(type="button",data-dismiss="modal",style="color:white") No, mejor no...
+              a#delete.btn.btn-danger(href="/classroom/#{classroom.id}/delete",data-csrf="#{_csrf}") Si, borrar!
+              //TODO: FIX THIS BUTTON TO SEND POST INSTEAD OF GET
 block scripts
   script(src="/js/header.js")
 block styles

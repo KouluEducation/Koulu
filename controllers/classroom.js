@@ -39,6 +39,40 @@ module.exports = function (router) {
         });
     });
 
+
+    /**
+     * View to create a student
+     */
+    router.get('/:classroom_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            var data = {
+                error: req.flash('error'),
+                success: req.flash('success'),
+                categories: [
+                    {
+                        key: 'primary',
+                        name: 'Primaria'
+                    },
+                    {
+                        key: 'secondary',
+                        name: 'Secundaria'
+                    }
+                ]
+            };
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                data.classroom = classroom;
+                return Specialty.findAll();
+            }).then(function (specialties) {
+                data.specialties = specialties;
+                res.render('classroom/form', data);
+            });
+        });
+    });
+
+
     /**
      * View to create a student
      */
@@ -172,7 +206,11 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
                 return res.redirect('back');
             }
-            var data = {};
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success')
+            };
             Classroom.find(req.params.classroom_id).then(function (classroom) {
                 data.classroom = classroom;
                 return classroom.getAllStudents();
@@ -330,6 +368,27 @@ module.exports = function (router) {
                 res.redirect('back');
             }).error(function () {
                 req.flash('error', 'Error al cargar asistencia');
+                res.redirect('back');
+            });
+        });
+    });
+
+    /**
+     * Delete a classroom
+     */
+    router.post('/:classroom_id/delete', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            Classrrom.find(req.params.classroom_id).then(function (classroom) {
+                return classroom.destroy;
+            }).then(function (classroom) {
+                req.flash('deleted', true);
+                req.flash('success', classroom.name + ' se ha eliminado correctamente!');
+                return res.direct('back');
+            }).error(function () {
+                req.flash('error', 'Error al eliminar curso');
                 res.redirect('back');
             });
         });
