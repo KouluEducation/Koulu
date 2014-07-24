@@ -1,6 +1,7 @@
 #kl-students.panel.panel-default
   .panel-heading Alumnos (#{students.length})
-    a.btn.btn-xs.btn-success.pull-right(href="/classroom/#{classroom.id}/student/new") Agregar alumno
+    if user.isPreceptor()
+      a.btn.btn-xs.btn-success.pull-right(href="/classroom/#{classroom.id}/student/new") Agregar alumno
   .panel-body
     ul.list-group
       each student, index in students

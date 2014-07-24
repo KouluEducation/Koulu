@@ -52,6 +52,7 @@ module.exports = function (router) {
             var data = {
                 error: req.flash('error'),
                 success: req.flash('success'),
+                deleted: req.flash('deleted'),
                 categories: [
                     {
                         key: 'primary',
@@ -210,7 +211,8 @@ module.exports = function (router) {
             var data = {
                 deleted: req.flash('deleted'),
                 error: req.flash('error'),
-                success: req.flash('success')
+                success: req.flash('success'),
+                user: user
             };
             Classroom.find(req.params.classroom_id).then(function (classroom) {
                 data.classroom = classroom;

@@ -37,7 +37,9 @@ module.exports = function (router) {
             if (!user.isTeacher() && !user.isPreceptor()) {
                 return res.redirect('back');
             }
-            var data = {};
+            var data = {
+                user: user
+            };
             Subject.find(req.params.subject_id).then(function (subject) {
                 data.subject = subject;
                 return subject.getClassroom();
