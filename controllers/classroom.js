@@ -21,6 +21,7 @@ module.exports = function (router) {
             var data = {
                 error: req.flash('error'),
                 success: req.flash('success'),
+                deleted: req.flash('deleted'),
                 categories: [
                     {
                         key: 'primary',

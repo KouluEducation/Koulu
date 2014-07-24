@@ -1,7 +1,15 @@
 #kl-classrooms.panel.panel-default
   - var baseUrl = user.isTeacher() ? '/subject' : '/classroom'
-  .panel-heading Cursos
-    a.btn.btn-xs.btn-success.pull-right(href="#{baseUrl}/new") Agregar curso
+  .panel-heading
+    if user.isPreceptor()
+      | Cursos
+    else
+      | Materias
+    a.btn.btn-xs.btn-success.pull-right(href="#{baseUrl}/new")
+      if user.isPreceptor()
+        | Agregar curso
+      else
+        | Agregar materia
   .panel-body
     ul.list-group
       each classroom in classrooms
