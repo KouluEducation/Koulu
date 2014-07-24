@@ -13,10 +13,11 @@
     .tab-content(style="margin-top:5px")
       #message.tab-pane.active
         textarea.form-control(rows="3",placeholder="Mensaje...")
-        select.form-control.input-sm.pull-left(name="fake-select", style="width:100px")
-          option(value="present")
-            | Curso
-        input.btn.btn-sm.btn-success.pull-left(type="submit", value="Enviar")
+        .row(style="margin: 10px 0 0 0")
+          select.form-control.input-sm.pull-left(name="fake-select", style="width:100px")
+            option(value="present")
+              | Curso
+          input.btn.btn-sm.btn-success.pull-left(type="submit", value="Enviar", style="margin-left: 10px")
       #test.tab-pane
         | 10/7/2014 Examen Integrador
       #file.tab-pane
@@ -24,7 +25,8 @@
          input.btn.btn-sm.btn-success.pull-left(type="submit", value="Subir..")
       #notification.tab-pane
         textarea.form-control(rows="3",placeholder="Mensaje...")
-        select.form-control.input-sm.pull-left(name="fake-select", style="width:100px")
-          option(value="present")
-            | Alumno
-        input.btn.btn-sm.btn-success.pull-left(type="submit", value="Enviar")
+        .row(style="margin: 10px 0 0 0")
+          select.form-control.input-sm.pull-left(name="fake-select", style="width:100px")
+            option(value="present")
+              | Alumno
+          input.btn.btn-sm.btn-success.pull-left(type="submit", value="Enviar", style="margin-left: 10px")
