@@ -9,41 +9,41 @@ block body
         h2 Agregar un curso
       else
         h2 Editar curso
-        if error.length !== 0
-          .alert.alert-danger
-            = error
-        if success.length !== 0
-          .alert.alert-success
-            = success
-        .form-group
-          label Nombre del curso
-          input.form-control.first(type="text",
-          placeholder="Nombre del curso",
-          name="name",
-          value=classroom ? classroom.name : ''
-          required,
-          autofocus)
-        // TODO: Arreglar el form para que traiga la categoria y la Especialidad de classroom
-        .form-group
-          label Nivel
-          select.form-control(name="category")
-            each category in categories
-              option(value="#{category.key}")= category.name
-        .form-group
-          label Especialidad
-          select.form-control(name="specialty")
-            each specialty in specialties
-              option(value="#{specialty.id}")= specialty.name
-        .text-left.wanna-sign-up
-          | No encuentro la especialidad que necesito, quiero&nbsp;
-          a(href="/specialty/new") agregarla
-        hr
-        input(type="hidden",name="_csrf",value="#{_csrf}")
-        if !classroom
-          button.btn.btn-lg.btn-success.btn-block(type="submit") Agregar
-        else
-          button.btn.btn-lg.btn-success.btn-block(type="submit") Editar
-        //TODO: send to the proper URL to edit the classroom
+      if error.length !== 0
+        .alert.alert-danger
+          = error
+      if success.length !== 0
+        .alert.alert-success
+          = success
+      .form-group
+        label Nombre del curso
+        input.form-control.first(type="text",
+        placeholder="Nombre del curso",
+        name="name",
+        value=classroom ? classroom.name : ''
+        required,
+        autofocus)
+      // TODO: Arreglar el form para que traiga la categoria y la Especialidad de classroom
+      .form-group
+        label Nivel
+        select.form-control(name="category")
+          each category in categories
+            option(value="#{category.key}")= category.name
+      .form-group
+        label Especialidad
+        select.form-control(name="specialty")
+          each specialty in specialties
+            option(value="#{specialty.id}")= specialty.name
+      .text-left.wanna-sign-up
+        | No encuentro la especialidad que necesito, quiero&nbsp;
+        a(href="/specialty/new") agregarla
+      hr
+      input(type="hidden",name="_csrf",value="#{_csrf}")
+      if !classroom
+        button.btn.btn-lg.btn-success.btn-block(type="submit") Agregar
+      else
+        button.btn.btn-lg.btn-success.btn-block(type="submit") Editar
+      //TODO: send to the proper URL to edit the classroom
 
 block scripts
   script(src="/js/header.js")
