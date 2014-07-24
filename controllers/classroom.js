@@ -39,6 +39,40 @@ module.exports = function (router) {
         });
     });
 
+
+    /**
+     * View to create a student
+     */
+    router.get('/:classroom_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('back');
+            }
+            var data = {
+                error: req.flash('error'),
+                success: req.flash('success'),
+                categories: [
+                    {
+                        key: 'primary',
+                        name: 'Primaria'
+                    },
+                    {
+                        key: 'secondary',
+                        name: 'Secundaria'
+                    }
+                ]
+            };
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                data.classroom = classroom;
+                return Specialty.findAll();
+            }).then(function (specialties) {
+                data.specialties = specialties;
+                res.render('classroom/form', data);
+            });
+        });
+    });
+
+
     /**
      * View to create a student
      */
