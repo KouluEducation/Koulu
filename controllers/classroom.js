@@ -184,6 +184,39 @@ module.exports = function (router) {
     });
 
     /**
+     * View to update a classroom
+     */
+    router.get('/:classroom_id/edit', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor() && !user.isStudent()) {
+                return res.redirect('back');
+            }
+            var data = {
+                deleted: req.flash('deleted'),
+                error: req.flash('error'),
+                success: req.flash('success'),
+                categories: [
+                    {
+                        key: 'primary',
+                        name: 'Primaria'
+                    },
+                    {
+                        key: 'secondary',
+                        name: 'Secundaria'
+                    }
+                ]
+            };
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                data.classroom = classroom;
+                return Specialty.findAll();
+            }).then(function (specialties) {
+                data.specialties = specialties;
+                res.render('classroom/form', data);
+            });
+        });
+    });
+
+    /**
      * Create a classroom
      */
     router.post('/', User.isAuthenticated(), User.inject(), function (req, res) {
@@ -203,6 +236,50 @@ module.exports = function (router) {
                 res.redirect('back');
             }).error(function () {
                 req.flash('error', 'Error al crear el curso');
+                res.redirect('back');
+            });
+        });
+    });
+
+    /**
+     * Update a classroom
+     */
+    router.post('/:classroom_id', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isTeacher() && !user.isPreceptor()) {
+                return res.redirect('/');
+            }
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                classroom.name = req.body.name;
+                classroom.category = req.body.category;
+                classroom.specialty_id = req.body.specialty;
+                return classroom.save();
+            }).then(function (classroom) {
+                req.flash('success', classroom.name + ' se ha modificado correctamente!');
+                res.redirect('back');
+            }).error(function () {
+                req.flash('error', 'Error al modificar el curso');
+                res.redirect('back');
+            });
+        });
+    });
+
+    /**
+     * Delete a classroom
+     */
+    router.post('/:classroom_id/delete', User.isAuthenticated(), User.inject(), function (req, res) {
+        User.getCurrent(req).then(function (user) {
+            if (!user.isPreceptor() && !user.isTeacher()) {
+                return res.redirect('back');
+            }
+            Classroom.find(req.params.classroom_id).then(function (classroom) {
+                return classroom.destroy();
+            }).then(function (classroom) {
+                req.flash('deleted', true);
+                req.flash('success', classroom.name + ' se ha eliminado correctamente!');
+                return res.redirect('back');
+            }).error(function () {
+                req.flash('error', 'Error al eliminar el curso');
                 res.redirect('back');
             });
         });

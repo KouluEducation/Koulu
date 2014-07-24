@@ -1,40 +1,70 @@
 extends ../layouts/master
 block title
-  | Nuevo curso en Koulu
+  if !classroom
+    | Nuevo curso en Koulu
+  else if deleted.length === 0
+    | Editar curso en Koulu
+  else
+    | Curso eliminado de Koulu
 block body
   include ../components/header
   .container.content
-    form(role="form",action="/classroom",method="post")
-      h2 Agregar un curso
+    - var action = classroom ? '/classroom/' + classroom.id : '/classroom'
+    form(role="form",action="#{action}",method="post")
+      if !classroom
+        h2 Agregar curso
+      else if deleted.length === 0
+        h2 Editar curso
+      else
+        h2 Curso eliminado
       if error.length !== 0
         .alert.alert-danger
           = error
       if success.length !== 0
         .alert.alert-success
           = success
-      .form-group
-        label Nombre del curso
-        input.form-control.first(type="text",
-        placeholder="Nombre del curso",
-        name="name",
-        required,
-        autofocus)
-      .form-group
-        label Nivel
-        select.form-control(name="category")
-          each category in categories
-            option(value="#{category.key}")= category.name
-      .form-group
-        label Especialidad
-        select.form-control(name="specialty")
-          each specialty in specialties
-            option(value="#{specialty.id}")= specialty.name
-      .text-left.wanna-sign-up
-        | No encuentro la especialidad que necesito, quiero&nbsp;
-        a(href="/specialty/new") agregarla
-      hr
-      input(type="hidden",name="_csrf",value="#{_csrf}")
-      button.btn.btn-lg.btn-success.btn-block(type="submit") Agregar
+      if deleted.length === 0
+        .form-group
+          label Nombre del curso
+          input.form-control.first(type="text",
+          placeholder="Nombre del curso",
+          name="name",
+          value=classroom ? classroom.name : ''
+          required,
+          autofocus)
+        .form-group
+          label Nivel
+          select.form-control(name="category")
+            each category in categories
+              option(value="#{category.key}",selected=classroom ? classroom.category == category.key : false)= category.name
+        .form-group
+          label Especialidad
+          select.form-control(name="specialty")
+            each specialty in specialties
+              option(value="#{specialty.id}",selected=classroom ? classroom.specialty_id == specialty.id : false)= specialty.name
+        .text-left.wanna-sign-up
+          | No encuentro la especialidad que necesito, quiero&nbsp;
+          a(href="/specialty/new") agregarla
+        hr
+        input(type="hidden",name="_csrf",value="#{_csrf}")
+        button.btn.btn-lg.btn-success.btn-block(type="submit") Aceptar
+    if classroom && deleted.length === 0
+      button.btn.btn-link.btn-block(type="button",style="color:#d9534f",data-toggle="modal",data-target="#kl-confirm-modal") Eliminar curso
+  if classroom && deleted.length === 0
+    #kl-confirm-modal.modal(tabindex="-1",role="dialog",aria-labelledby="myModalLabel",aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4#myModalLabel.modal-title ¡Atención!
+          .modal-body
+            | ¿Está seguro de borrar este curso?
+            br
+            | Si lo borra no habrá vuelta atrás...
+          .modal-footer
+            button.btn.btn-link(type="button",data-dismiss="modal",style="color:white") No, mejor no...
+            a#delete.btn.btn-danger(href="/classroom/#{classroom.id}/delete",data-csrf="#{_csrf}") Si, borrar!
+
 block scripts
   script(src="/js/header.js")
+  script(src="/js/confirm_modal.js")
 block styles
